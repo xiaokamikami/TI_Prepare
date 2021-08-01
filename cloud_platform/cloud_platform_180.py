@@ -84,10 +84,6 @@ while(True):
                elif(52 >tilt_ch):
                    tilt_ch_live-=1
                    tilt_servo.angle(tilt_ch_live, 100)
-           #if(tilt_ch>80):
-               #tilt_ch = 80
-           #elif(tilt_ch<30):
-               #tilt_ch = 30
            print("pan",pan_ch_live)
            print("tilt",tilt_ch_live)
            #tilt_servo.angle(tilt_ch, 100)
