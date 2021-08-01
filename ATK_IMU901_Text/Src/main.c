@@ -33,12 +33,22 @@
 #include "stdlib.h"
 #include "stdio.h"
 #include "string.h"
+#include "pid.h"
 #include "atk_imu901.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
+extern int Vertical_out,Velocity_out,Turn_out;//直立环&速度环&转向环 的输出变量
+extern float Med_Angle;//机械中值--能使得小车真正平衡住的角度。
+extern float Vertical_Kp;
+float Pitch,Roll,Yaw;						//角度
+short gyrox,gyroy,gyroz;				//陀螺仪--角速度
+short aacx,aacy,aacz;						//加速度
+int Encoder_Left,Encoder_Right;	//编码器数据（速度）
 
+int PWM_MAX=7200,PWM_MIN=-7200;	//PWM限幅变量
+int MOTO1,MOTO2;								//电机装载变量
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -184,7 +194,7 @@ int main(void)
 	uint8_t uart_temp[100];
     uint8_t ch;
 	uint32_t times = 0;
-
+	int PWM_out;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -243,37 +253,13 @@ int main(void)
 				}
 			}
 		}
-		printf("[XYZ]:%-6.1f %-6.1f %-6.1f\r\n", attitude.roll, attitude.pitch, attitude.yaw);
+      printf("姿态角[XYZ]:    %-6.1f     %-6.1f     %-6.1f   (°)\r\n", attitude.roll, attitude.pitch, attitude.yaw);
+      printf("加速度[XYZ]:    %-6.3f     %-6.3f     %-6.3f   (g)\r\n", gyroAccData.faccG[0], gyroAccData.faccG[1], gyroAccData.faccG[2]);
+	  GetMotorPulse();	//读取编码器
+		
 
 		
-//	    if (imu901_uart_receive(&ch, 1)) 	/*!< 获取串口fifo一个字节 */
-//        {
-//            if (imu901_unpack(ch)) 			/*!< 解析出有效数据包 */
-//            {
-//                if (rxPacket.startByte2 == UP_BYTE2) 			/*!< 主动上传的数据包 */
-//                {
-//                    atkpParsing(&rxPacket);
-//                }
-//            }
-//        }
-//        else
-//        {
-//            HAL_Delay(1);
 
-//            times++;
-
-//            if (times % 300  == 0)  HAL_GPIO_TogglePin(E3_GPIO_Port,E3_Pin); 	/* 闪烁LED,提示系统正在运行 */
-
-//            if (times % 1000 == 0) 					/*!< 1秒打印一次数据 */
-//            {
-//                printf("\r\n");
-//                printf("姿态角[XYZ]:    %-6.1f     %-6.1f     %-6.1f   (°)\r\n", attitude.roll, attitude.pitch, attitude.yaw);
-//                printf("加速度[XYZ]:    %-6.3f     %-6.3f     %-6.3f   (g)\r\n", gyroAccData.faccG[0], gyroAccData.faccG[1], gyroAccData.faccG[2]);
-//                printf("角速度[XYZ]:    %-6.1f     %-6.1f     %-6.1f   (°/s)\r\n", gyroAccData.fgyroD[0], gyroAccData.fgyroD[1], gyroAccData.fgyroD[2]);
-//                printf("磁场[XYZ]  :    %-6d     %-6d     %-6d   (uT)\r\n", magData.mag[0], magData.mag[1], magData.mag[2]);
-//                printf("气压 	   :    %-6dPa   %-6dcm\r\n", baroData.pressure, baroData.altitude);
-//            }
-//        }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

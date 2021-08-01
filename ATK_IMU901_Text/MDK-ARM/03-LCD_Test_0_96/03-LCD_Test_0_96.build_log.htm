@@ -27,24 +27,23 @@ Project File Date:  08/01/2021
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'E:\Keil\ARM\ARMCC\Bin'
 Build target '03-LCD_Test'
+compiling pid.c...
 compiling main.c...
-..\Function\pid.h(4): warning:  #1-D: last line of file ends without a newline
-  float PID_Postion(int Infrared,int Target);    //Î»ÖÃPID¿ØÖÆÆ÷
-../Src/main.c(184): warning:  #177-D: variable "uart_temp"  was declared but never referenced
+../Src/main.c(190): warning:  #177-D: variable "uart_temp"  was declared but never referenced
   	uint8_t uart_temp[100];
-../Src/main.c(186): warning:  #177-D: variable "times"  was declared but never referenced
+../Src/main.c(192): warning:  #177-D: variable "times"  was declared but never referenced
   	uint32_t times = 0;
-../Src/main.c(358): warning:  #177-D: variable "i"  was declared but never referenced
+../Src/main.c(340): warning:  #177-D: variable "i"  was declared but never referenced
       static unsigned char i = 0;
-../Src/main.c(359): warning:  #177-D: variable "dj"  was declared but never referenced
+../Src/main.c(341): warning:  #177-D: variable "dj"  was declared but never referenced
   	static unsigned char dj = 70;
-../Src/main.c(128): warning:  #177-D: function "RTC_CalendarShow"  was declared but never referenced
+../Src/main.c(134): warning:  #177-D: function "RTC_CalendarShow"  was declared but never referenced
   static void RTC_CalendarShow(RTC_DateTypeDef *sdatestructureget,RTC_TimeTypeDef *stimestructureget)
-../Src/main.c: 6 warnings, 0 errors
+../Src/main.c: 5 warnings, 0 errors
 linking...
-Program Size: Code=24308 RO-data=944 RW-data=40 ZI-data=3008  
+Program Size: Code=24432 RO-data=944 RW-data=48 ZI-data=3008  
 FromELF: creating hex file...
-".\03-LCD_Test_0_96\03-LCD_Test_0_96.axf" - 0 Error(s), 6 Warning(s).
+".\03-LCD_Test_0_96\03-LCD_Test_0_96.axf" - 0 Error(s), 5 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -67,7 +66,7 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.4.0
-Build Time Elapsed:  00:00:14
+Build Time Elapsed:  00:00:13
 </pre>
 </body>
 </html>
