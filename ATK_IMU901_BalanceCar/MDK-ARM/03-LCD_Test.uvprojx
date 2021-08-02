@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,TFT96,STM32H743xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc; ../Drivers/STM32H7xx_HAL_Driver/Inc; ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy; ../Drivers/CMSIS/Device/ST/STM32H7xx/Include; ../Drivers/CMSIS/Include; ..\Drivers\BSP\ST7735; ..\Function; ..\IMU</IncludePath>
+              <IncludePath>../Inc;    ../Drivers/STM32H7xx_HAL_Driver/Inc;    ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy;    ../Drivers/CMSIS/Device/ST/STM32H7xx/Include;    ../Drivers/CMSIS/Include;    ..\Drivers\BSP\ST7735;    ..\Function;    ..\IMU</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>

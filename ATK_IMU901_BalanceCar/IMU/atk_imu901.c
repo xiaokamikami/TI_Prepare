@@ -13,17 +13,17 @@ uint8_t uart3RxBuffer[UART3_RX_BUFFER_SIZE];
 
 ringbuffer_t uart3RxFifo;
 
-void USART3_IRQHandler(void)
-{
-    HAL_UART_IRQHandler(&huart3);
-	uint8_t res; 
-    if (__HAL_UART_GET_FLAG(&huart3, UART_FLAG_RXNE) != RESET) //!< 接收非空中断
-    {
-		HAL_UART_Receive(&huart3, (uint8_t *)&res , 1, 0xff);
-        //res= huart3.Instance->RDR;
-        ringbuffer_in_check(&uart3RxFifo, (uint8_t *)&res, 1); //!< 将接收到的数据放入FIFO
-    }
-}
+//void USART3_IRQHandler(void)
+//{
+//    HAL_UART_IRQHandler(&huart3);
+//	uint8_t res; 
+//    if (__HAL_UART_GET_FLAG(&huart3, UART_FLAG_RXNE) != RESET) //!< 接收非空中断
+//    {
+//		HAL_UART_Receive(&huart3, (uint8_t *)&res , 1, 0xff);
+//        //res= huart3.Instance->RDR;
+//        ringbuffer_in_check(&uart3RxFifo, (uint8_t *)&res, 1); //!< 将接收到的数据放入FIFO
+//    }
+//}
 
 /* 模块主动上传的数据(串口解析后) */
 attitude_t		attitude;		/*!< 姿态角 */
@@ -477,9 +477,12 @@ void imu901_init(void)
       *	 这里提供写入引用例子，用户可以在这写入一些默认参数，
       *  如陀螺仪加速度量程、带宽、回传速率、PWM输出等。
       */
-//    atkpWriteReg(REG_GYROFSR, 3, 1);
-//    atkpWriteReg(REG_ACCFSR, 1, 1);
-//		atkpWriteReg(REG_SAVE, 0, 1); 	/* 发送保存参数至模块内部Flash，否则模块掉电不保存 */
+	atkpWriteReg(REG_UPRATE,5,1);
+	atkpWriteReg(REG_SENCAL,1,1);
+
+    atkpWriteReg(REG_GYROFSR, 1, 1);
+    atkpWriteReg(REG_ACCFSR, 1, 1);
+	atkpWriteReg(REG_SAVE, 0, 1); 	/* 发送保存参数至模块内部Flash，否则模块掉电不保存 */
 
     /* 读出寄存器参数（测试） */
     atkpReadReg(REG_GYROFSR, &data);

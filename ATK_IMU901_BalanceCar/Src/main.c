@@ -47,9 +47,12 @@ float Pitch,Roll,Yaw;						//角度
 short gyrox,gyroy,gyroz;				//陀螺仪--角速度
 short aacx,aacy,aacz;						//加速度
 int Encoder_Left,Encoder_Right;	//编码器数据（速度）
-
 int PWM_MAX=7200,PWM_MIN=-7200;	//PWM限幅变量
 int MOTO1,MOTO2;								//电机装载变量
+
+
+
+static uint8_t Get_moter_Flag = 0;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -196,6 +199,7 @@ int main(void)
     uint8_t ch;
 	uint32_t times = 0;
 	int PWM_out;
+	uint32_t Lcd_Temp[20];
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -230,9 +234,15 @@ int main(void)
 	//LCD_Test();
     __HAL_UART_ENABLE_IT(&huart3, UART_IT_RXNE);
 	imu901_init();							/* IMU901模块初始 */
-
-
-
+	//HAL_Delay(1000);//等待校准
+	HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_1); // 开启编码器A0
+	HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_2); // 开启编码器A1
+	HAL_TIM_Encoder_Start(&htim4, TIM_CHANNEL_1); // 开启编码器B0
+	HAL_TIM_Encoder_Start(&htim4, TIM_CHANNEL_2); // 开启编码器B1
+	
+		HAL_TIM_PWM_Start(&htim2,TIM_CHANNEL_1);	//打开电机调速
+		HAL_TIM_PWM_Start(&htim2,TIM_CHANNEL_2);
+	HAL_TIM_Base_Start_IT(&htim6);                // 使能定时器中断(10ms)	
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -241,8 +251,9 @@ int main(void)
 
   while (1)
   {   
-	  HAL_Delay(100);
-	  HAL_GPIO_TogglePin(E3_GPIO_Port,E3_Pin);
+	  //HAL_Delay(50);
+	  //HAL_Delay(100);
+	  //HAL_GPIO_TogglePin(E3_GPIO_Port,E3_Pin);
 	  while(imu901_uart_receive(&ch, 1)) 	/*!< 获取串口fifo一个字节 */
 		{
 			if(imu901_unpack(ch)) 			/*!< 解析出有效数据包 */
@@ -253,27 +264,38 @@ int main(void)
 				}
 			}
 		}
-		float Pitch,Roll,Yaw;						//角度
-		short gyrox,gyroy,gyroz;				//陀螺仪--角速度
-		short aacx,aacy,aacz;						//加速度
-		Pitch = attitude.pitch;
-		gyroy = gyroAccData.faccG[1];
-		gyroz = gyroAccData.faccG[2];
-      printf("姿态角[XYZ]:    %-6.1f     %-6.1f     %-6.1f   (°)\r\n", attitude.roll, attitude.pitch, attitude.yaw);
-      printf("加速度[XYZ]:    %-6.3f     %-6.3f     %-6.3f   (g)\r\n", gyroAccData.faccG[0], gyroAccData.faccG[1], gyroAccData.faccG[2]);
-	  GetMotorPulse();	//读取编码器
-		
+//		float Pitch,Roll,Yaw;						//角度
+//		short gyrox,gyroy,gyroz;				//陀螺仪--角速度
+//		short aacx,aacy,aacz;						//加速度
+
+      //printf("姿态角[XYZ]:    %-6.1f     %-6.1f     %-6.1f   (°)\r\n", attitude.roll, attitude.pitch, attitude.yaw);
+      //printf("加速度[XYZ]:    %-6.3f     %-6.3f     %-6.3f   (g)\r\n", gyroAccData.faccG[0], gyroAccData.faccG[1], gyroAccData.faccG[2]);
+//	    printf("姿态角Y,Pitch:%-6.1f °\r\n", attitude.pitch);
+//      printf("加速度YZ,gyroy:%-6.3f,gyroz:%-6.3f g\r\n",gyroAccData.faccG[1], gyroAccData.faccG[2]);
+
+		if(Get_moter_Flag == 1){
+			Pitch = attitude.pitch;
+			gyroy = gyroAccData.fgyroD[1];
+			gyroz = gyroAccData.fgyroD[2];
+			HAL_GPIO_TogglePin(E3_GPIO_Port,E3_Pin);
+			//printf("Left:%d,Right:%d\r\n",Encoder_Left,Encoder_Right);
+			
 			//2.将数据压入闭环控制中，计算出控制输出量。
 			Vertical_out=Vertical(Med_Angle,Pitch,gyroy);				//直立环
 			Velocity_out=Velocity(Encoder_Left,Encoder_Right);	//速度环
-			Turn_out=Turn(gyroz);																//转向环
-			
+			Turn_out=Turn(gyroz);																//转向环			
 			PWM_out=Vertical_out-Vertical_Kp*Velocity_out;//最终输出
+			//printf("PWM_out:%d\r\n",PWM_out);
 			//3.把控制输出量加载到电机上，完成最终的的控制。
 			MOTO1=PWM_out-Turn_out;//左电机
 			MOTO2=PWM_out+Turn_out;//右电机
 			Limit(&MOTO1,&MOTO2);//PWM限幅			
 			Load(MOTO1,MOTO2);//加载到电机上。
+			Get_moter_Flag = 0;
+			printf("%-6.1f,%-6.3f,%-6.3f,%d,%d,%d\r\n", attitude.pitch,gyroAccData.faccG[1], gyroAccData.faccG[2],Encoder_Left,Encoder_Right,PWM_out);
+			HAL_GPIO_TogglePin(E3_GPIO_Port,E3_Pin);
+		}
+		
 
 		
 
@@ -347,8 +369,6 @@ void SystemClock_Config(void)
 /* USER CODE BEGIN 4 */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-    static unsigned char i = 0;
-	static unsigned char dj = 70;
     if (htim == (&htim7))
     {	
 
@@ -358,7 +378,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     }
     if (htim == (&htim6))
     {		
-
+		
+		GetMotorPulse();
+		Get_moter_Flag = 1;
+//		Pitch = attitude.pitch;
+//		gyroy = gyroAccData.faccG[1];
+//		gyroz = gyroAccData.faccG[2];
     }
 }
 

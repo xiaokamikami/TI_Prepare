@@ -204,7 +204,22 @@ void SysTick_Handler(void)
 /**
   * @brief This function handles USART3 global interrupt.
   */
+void USART3_IRQHandler(void)
+{
+  /* USER CODE BEGIN USART3_IRQn 0 */
 
+  /* USER CODE END USART3_IRQn 0 */
+  HAL_UART_IRQHandler(&huart3);
+  /* USER CODE BEGIN USART3_IRQn 1 */
+	uint8_t res; 
+    if (__HAL_UART_GET_FLAG(&huart3, UART_FLAG_RXNE) != RESET) //!< 接收非空中断
+    {
+		HAL_UART_Receive(&huart3, (uint8_t *)&res , 1, 0xff);
+        //res= huart3.Instance->RDR;
+        ringbuffer_in_check(&uart3RxFifo, (uint8_t *)&res, 1); //!< 将接收到的数据放入FIFO
+    }
+  /* USER CODE END USART3_IRQn 1 */
+}
 
 /**
   * @brief This function handles EXTI line[15:10] interrupts.
