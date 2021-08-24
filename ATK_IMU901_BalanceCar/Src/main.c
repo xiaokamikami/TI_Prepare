@@ -233,6 +233,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
 	//LCD_Test();
     __HAL_UART_ENABLE_IT(&huart3, UART_IT_RXNE);
+	HAL_Delay(100);
 	imu901_init();							/* IMU901模块初始 */
 	//HAL_Delay(1000);//等待校准
 	HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_1); // 开启编码器A0
@@ -254,16 +255,7 @@ int main(void)
 	  //HAL_Delay(50);
 	  //HAL_Delay(100);
 	  //HAL_GPIO_TogglePin(E3_GPIO_Port,E3_Pin);
-	  while(imu901_uart_receive(&ch, 1)) 	/*!< 获取串口fifo一个字节 */
-		{
-			if(imu901_unpack(ch)) 			/*!< 解析出有效数据包 */
-			{
-				if(rxPacket.startByte2 == UP_BYTE2) 			/*!< 主动上传的数据包 */
-				{
-					atkpParsing(&rxPacket);
-				}
-			}
-		}
+
 //		float Pitch,Roll,Yaw;						//角度
 //		short gyrox,gyroy,gyroz;				//陀螺仪--角速度
 //		short aacx,aacy,aacz;						//加速度
@@ -272,8 +264,17 @@ int main(void)
       //printf("加速度[XYZ]:    %-6.3f     %-6.3f     %-6.3f   (g)\r\n", gyroAccData.faccG[0], gyroAccData.faccG[1], gyroAccData.faccG[2]);
 //	    printf("姿态角Y,Pitch:%-6.1f °\r\n", attitude.pitch);
 //      printf("加速度YZ,gyroy:%-6.3f,gyroz:%-6.3f g\r\n",gyroAccData.faccG[1], gyroAccData.faccG[2]);
+		while(imu901_uart_receive(&ch, 1)) 	/*!< 获取串口fifo一个字节 */
+		{
+					if(imu901_unpack(ch)) 			/*!< 解析出有效数据包 */
+					{
+						if(rxPacket.startByte2 == UP_BYTE2) 			/*!< 主动上传的数据包 */
+						{
+							atkpParsing(&rxPacket);
+						}
+					}
+		}
 
-		if(Get_moter_Flag == 1){
 			Pitch = attitude.pitch;
 			gyroy = gyroAccData.fgyroD[1];
 			gyroz = gyroAccData.fgyroD[2];
@@ -294,7 +295,7 @@ int main(void)
 			Get_moter_Flag = 0;
 			printf("%-6.1f,%-6.3f,%-6.3f,%d,%d,%d\r\n", attitude.pitch,gyroAccData.faccG[1], gyroAccData.faccG[2],Encoder_Left,Encoder_Right,PWM_out);
 			HAL_GPIO_TogglePin(E3_GPIO_Port,E3_Pin);
-		}
+		
 		
 
 		
@@ -380,7 +381,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     {		
 		
 		GetMotorPulse();
-		Get_moter_Flag = 1;
+
 //		Pitch = attitude.pitch;
 //		gyroy = gyroAccData.faccG[1];
 //		gyroz = gyroAccData.faccG[2];

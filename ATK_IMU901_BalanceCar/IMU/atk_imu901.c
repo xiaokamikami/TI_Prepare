@@ -477,7 +477,7 @@ void imu901_init(void)
       *	 这里提供写入引用例子，用户可以在这写入一些默认参数，
       *  如陀螺仪加速度量程、带宽、回传速率、PWM输出等。
       */
-	atkpWriteReg(REG_UPRATE,5,1);
+	atkpWriteReg(REG_UPRATE,4,1);
 	atkpWriteReg(REG_SENCAL,1,1);
 
     atkpWriteReg(REG_GYROFSR, 1, 1);

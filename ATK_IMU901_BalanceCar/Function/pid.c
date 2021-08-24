@@ -1,12 +1,12 @@
 #include "pid.h"
 #include "math.h"
-float Med_Angle=-10;//机械中值--能使得小车真正平衡住的角度。
+float Med_Angle=6;//机械中值--能使得小车真正平衡住的角度。
 float
-	//Vertical_Kp=115,	//直立环KP、KD 12V  调好
+	Vertical_Kp=290,	//直立环KP、KD 12V  调好
 	//Vertical_Kp=520,	//直立环KP、KD 7.4V
-	Vertical_Kp=0,	//直立环KP、KD 0
-	//Vertical_Kd=3.5 ;		//12V			调好
-	Vertical_Kd=0 ;
+	//Vertical_Kp=0,	//直立环KP、KD 0
+	Vertical_Kd=5 ;		//12V			调好
+	//Vertical_Kd=0 ;
 	//Vertical_Kd=50;
 float
 	Velocity_Kp=0,	//速度环KP、KI
@@ -29,9 +29,10 @@ int Vertical(float Med,float Angle,float gyro_Y)
 {
 	int PWM_out;
 	
-	PWM_out=Vertical_Kp*Angle+Vertical_Kd*(gyro_Y-0);//【1】
-	if(fabs(Angle)>55){return 0;}
-	else return PWM_out;
+	PWM_out=Vertical_Kp*(Angle-Med)+Vertical_Kd*(gyro_Y-0);//【1】
+	//if(fabs(Angle)>55){return 0;}
+	//else return PWM_out;
+	return PWM_out;
 }
 
 
