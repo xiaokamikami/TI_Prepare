@@ -13,7 +13,8 @@ color_B = (0, 0, 255)
 color_Blk = (255,255,255)
 color_Wit = (10,10,10)
 
-class_IDs = ['Black', 'Blue', 'Green', 'Red', 'White']
+#class_IDs = ['Black', 'Blue', 'Red', 'Green', 'White']
+class_IDs = ['Black', 'Blue', 'Red', 'White','Green']
 #class_IDs = ['mask', 'unmask']
 
 
@@ -28,10 +29,10 @@ def drawConfidenceText(image, rol, classid, value):
     elif classid ==2:
         text = 'Blue: ' + str(_confidence) + '%'
     elif classid ==3:
-        text = 'Green: ' + str(_confidence) + '%'
-    elif classid ==4:
         text = 'Red: ' + str(_confidence) + '%'
     elif classid ==5:
+        text = 'Green: ' + str(_confidence) + '%'
+    elif classid ==4:
         text = 'White: ' + str(_confidence) + '%'
     image.draw_string(rol[0], rol[1], text, color=color_G, scale=2.5)
 
@@ -43,17 +44,17 @@ sensor.reset(dual_buff=True)
 sensor.set_pixformat(sensor.RGB565)
 sensor.set_framesize(sensor.QVGA)
 sensor.set_windowing((224,224))
-sensor.set_hmirror(1)    #设置摄像头镜像
-sensor.set_vflip(1)      #设置摄像头翻转
-sensor.set_auto_gain(False)  # must turn this off to prevent image washout...
-sensor.set_auto_whitebal(False)  # must turn this off to prevent image washout...
+sensor.set_hmirror(0)    #设置摄像头镜像
+sensor.set_vflip(0)      #设置摄像头翻转
+#sensor.set_auto_gain(False)  # must turn this off to prevent image washout...
+#sensor.set_auto_whitebal(False)  # must turn this off to prevent image washout...
 sensor.run(1)
 
 
 task = kpu.load(0x300000)
 
-#anchor = (0.4929, 0.8741, 0.9821, 1.5277, 2.1476, 2.1129, 2.8415, 3.3253, 4.2735, 3.4473)
-anchor = (1.4191, 2.4646, 1.6486, 2.8296, 1.9241, 3.2515, 2.5446, 1.4539, 2.9777, 1.683)
+anchor = (1.5095, 2.6617, 1.9516, 3.4156, 2.5343, 4.4111, 2.8735, 1.6412, 4.0553, 2.3111)
+#anchor = (1.3316, 2.3774, 1.4857, 2.6176, 1.6022, 2.8221, 1.8719, 3.375, 2.6094, 1.5146)
 _ = kpu.init_yolo2(task, 0.5, 0.3, 5, anchor)
 img_lcd = image.Image()
 
@@ -69,6 +70,8 @@ while (True):
             confidence = float(item.value())
             itemROL = item.rect()
             classID = int(item.classid())
+            print_args = (item.x(), item.y(), classID)
+            print("x:",print_args[0],"y:",print_args[1],"id:",print_args[2])
             if classID == 0 and confidence > 0.5:           #图像符合
                 _ = img.draw_rectangle(itemROL, color_Blk, tickness=5)        #打框
                 if totalRes == 1:
