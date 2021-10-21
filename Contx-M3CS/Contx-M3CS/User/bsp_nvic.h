@@ -7,13 +7,13 @@
 //Òý½Å¶¨Òå
 #define KEY1_INT_GPIO_PORT         GPIOB
 #define KEY1_INT_GPIO_CLK          (RCC_APB2Periph_GPIOB|RCC_APB2Periph_AFIO)
-#define KEY1_INT_GPIO_PIN          GPIO_Pin_4
+#define KEY1_INT_GPIO_PIN          GPIO_Pin_3
 #define KEY1_INT_EXTI_PORTSOURCE   GPIO_PortSourceGPIOB
-#define KEY1_INT_EXTI_PINSOURCE    GPIO_PinSource4
-#define KEY1_INT_EXTI_LINE         EXTI_Line4
-#define KEY1_INT_EXTI_IRQ          EXTI4_IRQn
+#define KEY1_INT_EXTI_PINSOURCE    GPIO_PinSource3
+#define KEY1_INT_EXTI_LINE         EXTI_Line3
+#define KEY1_INT_EXTI_IRQ          EXTI3_IRQn
 
-#define KEY1_IRQHandler            EXTI4_IRQHandler
+#define KEY1_IRQHandler            EXTI3_IRQHandler
 
 
 #define KEY2_INT_GPIO_PORT         GPIOC

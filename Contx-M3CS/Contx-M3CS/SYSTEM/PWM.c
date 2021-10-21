@@ -44,18 +44,18 @@ void TIM8_PWM_Init(u16 arr, u16 psc)		//电机
 	TIM_OC2Init(TIM8, &TIM_OCInitStructure); 
 	TIM_OC2PreloadConfig(TIM8, TIM_OCPreload_Enable);
 
-	TIM_OC3Init(TIM8, &TIM_OCInitStructure);
-	TIM_OC3PreloadConfig(TIM8, TIM_OCPreload_Enable);
+//	TIM_OC3Init(TIM8, &TIM_OCInitStructure);
+//	TIM_OC3PreloadConfig(TIM8, TIM_OCPreload_Enable);
 
-	TIM_OC4Init(TIM8, &TIM_OCInitStructure); 
-	TIM_OC4PreloadConfig(TIM8, TIM_OCPreload_Enable);
+//	TIM_OC4Init(TIM8, &TIM_OCInitStructure); 
+//	TIM_OC4PreloadConfig(TIM8, TIM_OCPreload_Enable);
 
 	TIM_ARRPreloadConfig(TIM8, ENABLE);
 	TIM_CtrlPWMOutputs(TIM8, ENABLE);
 	TIM_Cmd(TIM8, ENABLE);
 }
 
-void TIM4_PWM_Init(u16 arr, u16 psc)	//舵机
+void TIM4_PWM_Init(u16 arr, u16 psc,u16 pulse)	//舵机
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
 	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
@@ -74,12 +74,14 @@ void TIM4_PWM_Init(u16 arr, u16 psc)	//舵机
 
 	TIM_TimeBaseStructure.TIM_Period = arr;
 	TIM_TimeBaseStructure.TIM_Prescaler = psc;
+		
 	TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure);
 
 	/* Output Compare Toggle Mode configuration: Channel1 */
 	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM2;
 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
 	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_Low;
+	TIM_OCInitStructure.TIM_Pulse = pulse;
 	TIM_OC1Init(TIM4, &TIM_OCInitStructure);
 	TIM_OC1PreloadConfig(TIM4, TIM_OCPreload_Enable);
 

@@ -48,7 +48,7 @@ void EXTI_Key_Config(void)
 	/* 选择按键用到的GPIO */	
   GPIO_InitStructure.GPIO_Pin = KEY1_INT_GPIO_PIN;
   /* 配置为浮空输入 */	
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;
   GPIO_Init(KEY1_INT_GPIO_PORT, &GPIO_InitStructure);
 
 	/* 选择EXTI的信号源 */
@@ -67,7 +67,7 @@ void EXTI_Key_Config(void)
 	/* 选择按键用到的GPIO */	
   GPIO_InitStructure.GPIO_Pin = KEY2_INT_GPIO_PIN;
   /* 配置为浮空输入 */	
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;
   GPIO_Init(KEY2_INT_GPIO_PORT, &GPIO_InitStructure);
 
 	/* 选择EXTI的信号源 */

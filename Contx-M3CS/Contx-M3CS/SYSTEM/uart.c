@@ -72,6 +72,35 @@ void UART_Init (char Channel)
 		
 		NVIC_InitStrue.NVIC_IRQChannel=USART2_IRQn;
 	}
+	else if(Channel == 3)
+	{
+		/*	Clock	*/
+		RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);	// GPIOA 时钟
+		RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3,ENABLE);	// 使能 USART2  (APB1)
+		
+		USART_DeInit(USART3);
+		
+		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;	//TXD
+		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP; //复用推挽复用
+		GPIO_Init(GPIOA,&GPIO_InitStructure);
+		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11;	//RXD
+		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; //上拉输入
+		GPIO_Init(GPIOA,&GPIO_InitStructure);
+		
+		// 初始化 串口模式状态
+		USART_InitStrue.USART_BaudRate= 115200; // 波特率
+		USART_InitStrue.USART_HardwareFlowControl=USART_HardwareFlowControl_None; // 硬件流控制
+		USART_InitStrue.USART_Mode=USART_Mode_Tx|USART_Mode_Rx; // 发送 接收 模式都使用
+		USART_InitStrue.USART_Parity=USART_Parity_No; // 没有奇偶校验
+		USART_InitStrue.USART_StopBits=USART_StopBits_1; // 一位停止位
+		USART_InitStrue.USART_WordLength=USART_WordLength_8b; // 每次发送数据宽度为8位
+		USART_Init(USART3,&USART_InitStrue);
+		USART_ITConfig(USART3,USART_IT_RXNE,ENABLE);//开启中断
+		USART_Cmd(USART3,ENABLE);	//使能串口2
+		
+		NVIC_InitStrue.NVIC_IRQChannel=USART3_IRQn;
+	}
 	NVIC_InitStrue.NVIC_IRQChannelCmd=ENABLE;
 	NVIC_InitStrue.NVIC_IRQChannelPreemptionPriority=2;
 	NVIC_InitStrue.NVIC_IRQChannelSubPriority=2;
@@ -98,13 +127,13 @@ char *  Num_Handle_Byte (char num)
 	return array;
 }
 
-void USART2_IRQHandler(void) // 串口2中断服务函数			//初始化一定要在 Main 左右 (Read_Flag)
+void USART3_IRQHandler(void) // 串口3中断服务函数			//初始化一定要在 Main 左右 (Read_Flag)
 {
-	if(USART_GetITStatus(USART2,USART_IT_RXNE) && Read_Flag == 0) // 中断标志
+	if(USART_GetITStatus(USART3,USART_IT_RXNE) && Read_Flag == 0) // 中断标志
 	{
-		res = USART_ReceiveData(USART2);  // 串口2 接收
+		res = USART_ReceiveData(USART3);  // 串口3 接收
 		Uart_array_r[r_num++] = res;
-		USART_SendData(USART2,res);   // 串口2 发送
+		USART_SendData(USART3,res);   // 串口3 发送
 		if(res == '}')	{Read_Flag = 1;	r_num = 0;}
 	}
 }

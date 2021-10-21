@@ -1,6 +1,6 @@
 Dependencies for Project 'M3CS', Target 'Target 1': (DO NOT MODIFY !)
 CompilerVersion: 5060750::V5.06 update 6 (build 750)::.\ARMCC
-F (.\main.c)(0x61702068)(--c99 --gnu -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\User -I ..\Lib\inc -I ..\Lib\src -I ..\MCSIS -I ..\Startup -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\SYSTEM -I ..\User-IE:\Keil\Pack\Keil\STM32F1xx_DFP\2.3.0\Device\Include-IE:\Keil\ARM\CMSIS\Include-D__UVISION_VERSION="531" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\main.o --omf_browse ..\obj\main.crf --depend ..\obj\main.d)
+F (.\main.c)(0x6171692F)(--c99 --gnu -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\User -I ..\Lib\inc -I ..\Lib\src -I ..\MCSIS -I ..\Startup -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\SYSTEM -I ..\User-IE:\Keil\Pack\Keil\STM32F1xx_DFP\2.3.0\Device\Include-IE:\Keil\ARM\CMSIS\Include-D__UVISION_VERSION="531" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\main.o --omf_browse ..\obj\main.crf --depend ..\obj\main.d)
 I (..\MCSIS\stm32f10x.h)(0x4D783CB4)
 I (..\MCSIS\core_cm3.h)(0x4D523B58)
 I (E:\Keil\ARM\ARMCC\include\stdint.h)(0x5EC775FC)
@@ -33,13 +33,14 @@ I (..\SYSTEM\delay\delay.h)(0x609BC765)
 I (..\SYSTEM\sys\sys.h)(0x550F951B)
 I (..\SYSTEM\lcd.h)(0x60D86780)
 I (E:\Keil\ARM\ARMCC\include\stdlib.h)(0x5EC775FC)
-I (..\SYSTEM\key.h)(0x61701E89)
-I (..\SYSTEM\pwm.h)(0x5FBBB5EF)
+I (..\SYSTEM\key.h)(0x61711872)
+I (..\SYSTEM\pwm.h)(0x6171018D)
 I (..\SYSTEM\Motor.h)(0x5FBCC616)
 I (E:\Keil\ARM\ARMCC\include\stdio.h)(0x5EC775FC)
-I (..\SYSTEM\main.h)(0x617015A3)
-I (bsp_nvic.h)(0x6170237F)
-F (.\stm32f10x_it.c)(0x61701C98)(--c99 --gnu -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\User -I ..\Lib\inc -I ..\Lib\src -I ..\MCSIS -I ..\Startup -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\SYSTEM -I ..\User-IE:\Keil\Pack\Keil\STM32F1xx_DFP\2.3.0\Device\Include-IE:\Keil\ARM\CMSIS\Include-D__UVISION_VERSION="531" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\stm32f10x_it.o --omf_browse ..\obj\stm32f10x_it.crf --depend ..\obj\stm32f10x_it.d)
+I (..\SYSTEM\main.h)(0x6171693F)
+I (bsp_nvic.h)(0x617115E7)
+I (..\SYSTEM\uart.h)(0x5FBF95A4)
+F (.\stm32f10x_it.c)(0x6171197B)(--c99 --gnu -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\User -I ..\Lib\inc -I ..\Lib\src -I ..\MCSIS -I ..\Startup -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\SYSTEM -I ..\User-IE:\Keil\Pack\Keil\STM32F1xx_DFP\2.3.0\Device\Include-IE:\Keil\ARM\CMSIS\Include-D__UVISION_VERSION="531" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\stm32f10x_it.o --omf_browse ..\obj\stm32f10x_it.crf --depend ..\obj\stm32f10x_it.d)
 I (stm32f10x_it.h)(0x6170130B)
 I (..\MCSIS\stm32f10x.h)(0x4D783CB4)
 I (..\MCSIS\core_cm3.h)(0x4D523B58)
@@ -69,8 +70,8 @@ I (..\Lib\inc\stm32f10x_tim.h)(0x4D783BB4)
 I (..\Lib\inc\stm32f10x_usart.h)(0x4D783BB4)
 I (..\Lib\inc\stm32f10x_wwdg.h)(0x4D783BB4)
 I (..\Lib\inc\misc.h)(0x4D783BB4)
-I (bsp_nvic.h)(0x6170237F)
-I (..\SYSTEM\main.h)(0x617015A3)
+I (bsp_nvic.h)(0x617115E7)
+I (..\SYSTEM\main.h)(0x6171693F)
 F (..\SYSTEM\delay\delay.c)(0x608A6802)(--c99 --gnu -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\User -I ..\Lib\inc -I ..\Lib\src -I ..\MCSIS -I ..\Startup -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\SYSTEM -I ..\User-IE:\Keil\Pack\Keil\STM32F1xx_DFP\2.3.0\Device\Include-IE:\Keil\ARM\CMSIS\Include-D__UVISION_VERSION="531" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\delay.o --omf_browse ..\obj\delay.crf --depend ..\obj\delay.d)
 I (..\SYSTEM\delay\delay.h)(0x609BC765)
 I (..\SYSTEM\sys\sys.h)(0x550F951B)
@@ -162,7 +163,7 @@ I (..\Lib\inc\stm32f10x_tim.h)(0x4D783BB4)
 I (..\Lib\inc\stm32f10x_usart.h)(0x4D783BB4)
 I (..\Lib\inc\stm32f10x_wwdg.h)(0x4D783BB4)
 I (..\Lib\inc\misc.h)(0x4D783BB4)
-I (..\SYSTEM\usart\usart.h)(0x50517A82)
+I (..\SYSTEM\usart\usart.h)(0x61712394)
 I (E:\Keil\ARM\ARMCC\include\stdio.h)(0x5EC775FC)
 F (..\SYSTEM\OLED_S.c)(0x5FBFA5D5)(--c99 --gnu -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\User -I ..\Lib\inc -I ..\Lib\src -I ..\MCSIS -I ..\Startup -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\SYSTEM -I ..\User-IE:\Keil\Pack\Keil\STM32F1xx_DFP\2.3.0\Device\Include-IE:\Keil\ARM\CMSIS\Include-D__UVISION_VERSION="531" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\oled_s.o --omf_browse ..\obj\oled_s.crf --depend ..\obj\oled_s.d)
 I (..\SYSTEM\oled_s.h)(0x5FBA7317)
@@ -229,7 +230,7 @@ I (..\Lib\inc\stm32f10x_tim.h)(0x4D783BB4)
 I (..\Lib\inc\stm32f10x_usart.h)(0x4D783BB4)
 I (..\Lib\inc\stm32f10x_wwdg.h)(0x4D783BB4)
 I (..\Lib\inc\misc.h)(0x4D783BB4)
-F (..\SYSTEM\uart.c)(0x5FCF2404)(--c99 --gnu -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\User -I ..\Lib\inc -I ..\Lib\src -I ..\MCSIS -I ..\Startup -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\SYSTEM -I ..\User-IE:\Keil\Pack\Keil\STM32F1xx_DFP\2.3.0\Device\Include-IE:\Keil\ARM\CMSIS\Include-D__UVISION_VERSION="531" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\uart.o --omf_browse ..\obj\uart.crf --depend ..\obj\uart.d)
+F (..\SYSTEM\uart.c)(0x617124A6)(--c99 --gnu -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\User -I ..\Lib\inc -I ..\Lib\src -I ..\MCSIS -I ..\Startup -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\SYSTEM -I ..\User-IE:\Keil\Pack\Keil\STM32F1xx_DFP\2.3.0\Device\Include-IE:\Keil\ARM\CMSIS\Include-D__UVISION_VERSION="531" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\uart.o --omf_browse ..\obj\uart.crf --depend ..\obj\uart.d)
 I (..\SYSTEM\uart.h)(0x5FBF95A4)
 I (..\Lib\inc\stm32f10x_rcc.h)(0x4D783BB4)
 I (..\MCSIS\stm32f10x.h)(0x4D783CB4)
@@ -259,8 +260,8 @@ I (..\Lib\inc\stm32f10x_tim.h)(0x4D783BB4)
 I (..\Lib\inc\stm32f10x_usart.h)(0x4D783BB4)
 I (..\Lib\inc\stm32f10x_wwdg.h)(0x4D783BB4)
 I (..\Lib\inc\misc.h)(0x4D783BB4)
-F (..\SYSTEM\PWM.c)(0x616FCE89)(--c99 --gnu -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\User -I ..\Lib\inc -I ..\Lib\src -I ..\MCSIS -I ..\Startup -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\SYSTEM -I ..\User-IE:\Keil\Pack\Keil\STM32F1xx_DFP\2.3.0\Device\Include-IE:\Keil\ARM\CMSIS\Include-D__UVISION_VERSION="531" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\pwm.o --omf_browse ..\obj\pwm.crf --depend ..\obj\pwm.d)
-I (..\SYSTEM\PWM.h)(0x5FBBB5EF)
+F (..\SYSTEM\PWM.c)(0x61710223)(--c99 --gnu -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\User -I ..\Lib\inc -I ..\Lib\src -I ..\MCSIS -I ..\Startup -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\SYSTEM -I ..\User-IE:\Keil\Pack\Keil\STM32F1xx_DFP\2.3.0\Device\Include-IE:\Keil\ARM\CMSIS\Include-D__UVISION_VERSION="531" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\pwm.o --omf_browse ..\obj\pwm.crf --depend ..\obj\pwm.d)
+I (..\SYSTEM\PWM.h)(0x6171018D)
 I (..\SYSTEM\sys\sys.h)(0x550F951B)
 I (..\MCSIS\stm32f10x.h)(0x4D783CB4)
 I (..\MCSIS\core_cm3.h)(0x4D523B58)
@@ -321,7 +322,7 @@ I (..\Lib\inc\stm32f10x_tim.h)(0x4D783BB4)
 I (..\Lib\inc\stm32f10x_usart.h)(0x4D783BB4)
 I (..\Lib\inc\stm32f10x_wwdg.h)(0x4D783BB4)
 I (..\Lib\inc\misc.h)(0x4D783BB4)
-I (..\SYSTEM\PWM.h)(0x5FBBB5EF)
+I (..\SYSTEM\PWM.h)(0x6171018D)
 I (..\User\DATA_handle.h)(0x60992CFF)
 I (E:\Keil\ARM\ARMCC\include\stdio.h)(0x5EC775FC)
 F (.\HC595.c)(0x5FC8CC42)(--c99 --gnu -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\User -I ..\Lib\inc -I ..\Lib\src -I ..\MCSIS -I ..\Startup -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\SYSTEM -I ..\User-IE:\Keil\Pack\Keil\STM32F1xx_DFP\2.3.0\Device\Include-IE:\Keil\ARM\CMSIS\Include-D__UVISION_VERSION="531" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\hc595.o --omf_browse ..\obj\hc595.crf --depend ..\obj\hc595.d)
@@ -386,8 +387,8 @@ I (..\Lib\inc\stm32f10x_tim.h)(0x4D783BB4)
 I (..\Lib\inc\stm32f10x_usart.h)(0x4D783BB4)
 I (..\Lib\inc\stm32f10x_wwdg.h)(0x4D783BB4)
 I (..\Lib\inc\misc.h)(0x4D783BB4)
-F (..\SYSTEM\key.c)(0x6170203A)(--c99 --gnu -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\User -I ..\Lib\inc -I ..\Lib\src -I ..\MCSIS -I ..\Startup -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\SYSTEM -I ..\User-IE:\Keil\Pack\Keil\STM32F1xx_DFP\2.3.0\Device\Include-IE:\Keil\ARM\CMSIS\Include-D__UVISION_VERSION="531" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\key.o --omf_browse ..\obj\key.crf --depend ..\obj\key.d)
-I (..\SYSTEM\key.h)(0x61701E89)
+F (..\SYSTEM\key.c)(0x61711882)(--c99 --gnu -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\User -I ..\Lib\inc -I ..\Lib\src -I ..\MCSIS -I ..\Startup -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\SYSTEM -I ..\User-IE:\Keil\Pack\Keil\STM32F1xx_DFP\2.3.0\Device\Include-IE:\Keil\ARM\CMSIS\Include-D__UVISION_VERSION="531" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\key.o --omf_browse ..\obj\key.crf --depend ..\obj\key.d)
+I (..\SYSTEM\key.h)(0x61711872)
 I (..\MCSIS\stm32f10x.h)(0x4D783CB4)
 I (..\MCSIS\core_cm3.h)(0x4D523B58)
 I (E:\Keil\ARM\ARMCC\include\stdint.h)(0x5EC775FC)
@@ -454,8 +455,8 @@ I (..\SYSTEM\bmp.h)(0x60910C5B)
 F (.\Data_Handle.c)(0x60992C9C)(--c99 --gnu -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\User -I ..\Lib\inc -I ..\Lib\src -I ..\MCSIS -I ..\Startup -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\SYSTEM -I ..\User-IE:\Keil\Pack\Keil\STM32F1xx_DFP\2.3.0\Device\Include-IE:\Keil\ARM\CMSIS\Include-D__UVISION_VERSION="531" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\data_handle.o --omf_browse ..\obj\data_handle.crf --depend ..\obj\data_handle.d)
 I (Data_Handle.h)(0x60992CFF)
 I (E:\Keil\ARM\ARMCC\include\stdio.h)(0x5EC775FC)
-F (.\bsp_nvic.c)(0x61700E58)(--c99 --gnu -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\User -I ..\Lib\inc -I ..\Lib\src -I ..\MCSIS -I ..\Startup -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\SYSTEM -I ..\User-IE:\Keil\Pack\Keil\STM32F1xx_DFP\2.3.0\Device\Include-IE:\Keil\ARM\CMSIS\Include-D__UVISION_VERSION="531" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\bsp_nvic.o --omf_browse ..\obj\bsp_nvic.crf --depend ..\obj\bsp_nvic.d)
-I (bsp_nvic.h)(0x6170237F)
+F (.\bsp_nvic.c)(0x61711838)(--c99 --gnu -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\User -I ..\Lib\inc -I ..\Lib\src -I ..\MCSIS -I ..\Startup -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\SYSTEM -I ..\User-IE:\Keil\Pack\Keil\STM32F1xx_DFP\2.3.0\Device\Include-IE:\Keil\ARM\CMSIS\Include-D__UVISION_VERSION="531" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\bsp_nvic.o --omf_browse ..\obj\bsp_nvic.crf --depend ..\obj\bsp_nvic.d)
+I (bsp_nvic.h)(0x617115E7)
 I (..\MCSIS\stm32f10x.h)(0x4D783CB4)
 I (..\MCSIS\core_cm3.h)(0x4D523B58)
 I (E:\Keil\ARM\ARMCC\include\stdint.h)(0x5EC775FC)
@@ -484,6 +485,37 @@ I (..\Lib\inc\stm32f10x_tim.h)(0x4D783BB4)
 I (..\Lib\inc\stm32f10x_usart.h)(0x4D783BB4)
 I (..\Lib\inc\stm32f10x_wwdg.h)(0x4D783BB4)
 I (..\Lib\inc\misc.h)(0x4D783BB4)
+F (..\SYSTEM\encoder.c)(0x61716121)(--c99 --gnu -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\User -I ..\Lib\inc -I ..\Lib\src -I ..\MCSIS -I ..\Startup -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\SYSTEM -I ..\User-IE:\Keil\Pack\Keil\STM32F1xx_DFP\2.3.0\Device\Include-IE:\Keil\ARM\CMSIS\Include-D__UVISION_VERSION="531" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\encoder.o --omf_browse ..\obj\encoder.crf --depend ..\obj\encoder.d)
+I (..\SYSTEM\encoder.h)(0x61716967)
+I (..\MCSIS\stm32f10x.h)(0x4D783CB4)
+I (..\MCSIS\core_cm3.h)(0x4D523B58)
+I (E:\Keil\ARM\ARMCC\include\stdint.h)(0x5EC775FC)
+I (..\MCSIS\system_stm32f10x.h)(0x4D783CAA)
+I (..\User\stm32f10x_conf.h)(0x4D99A59E)
+I (..\Lib\inc\stm32f10x_adc.h)(0x4D783BB4)
+I (..\Lib\inc\stm32f10x_bkp.h)(0x4D783BB4)
+I (..\Lib\inc\stm32f10x_can.h)(0x4D783BB4)
+I (..\Lib\inc\stm32f10x_cec.h)(0x4D783BB4)
+I (..\Lib\inc\stm32f10x_crc.h)(0x4D783BB4)
+I (..\Lib\inc\stm32f10x_dac.h)(0x4D783BB4)
+I (..\Lib\inc\stm32f10x_dbgmcu.h)(0x4D783BB4)
+I (..\Lib\inc\stm32f10x_dma.h)(0x4D783BB4)
+I (..\Lib\inc\stm32f10x_exti.h)(0x4D783BB4)
+I (..\Lib\inc\stm32f10x_flash.h)(0x4D783BB4)
+I (..\Lib\inc\stm32f10x_fsmc.h)(0x4D783BB4)
+I (..\Lib\inc\stm32f10x_gpio.h)(0x5ED9027F)
+I (..\Lib\inc\stm32f10x_i2c.h)(0x4D783BB4)
+I (..\Lib\inc\stm32f10x_iwdg.h)(0x4D783BB4)
+I (..\Lib\inc\stm32f10x_pwr.h)(0x4D783BB4)
+I (..\Lib\inc\stm32f10x_rcc.h)(0x4D783BB4)
+I (..\Lib\inc\stm32f10x_rtc.h)(0x4D783BB4)
+I (..\Lib\inc\stm32f10x_sdio.h)(0x4D783BB4)
+I (..\Lib\inc\stm32f10x_spi.h)(0x4D783BB4)
+I (..\Lib\inc\stm32f10x_tim.h)(0x4D783BB4)
+I (..\Lib\inc\stm32f10x_usart.h)(0x4D783BB4)
+I (..\Lib\inc\stm32f10x_wwdg.h)(0x4D783BB4)
+I (..\Lib\inc\misc.h)(0x4D783BB4)
+I (..\SYSTEM\main.h)(0x6171693F)
 F (..\Startup\startup_stm32f10x_hd.s)(0x4D783CDE)(--cpu Cortex-M3 -g --apcs=interwork -IE:\Keil\Pack\Keil\STM32F1xx_DFP\2.3.0\Device\Include-IE:\Keil\ARM\CMSIS\Include--pd "__UVISION_VERSION SETA 531" --pd "STM32F10X_HD SETA 1"--list .\listings\startup_stm32f10x_hd.lst --xref -o ..\obj\startup_stm32f10x_hd.o --depend ..\obj\startup_stm32f10x_hd.d)
 F (..\Lib\src\misc.c)(0x4D783BB4)(--c99 --gnu -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\User -I ..\Lib\inc -I ..\Lib\src -I ..\MCSIS -I ..\Startup -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\SYSTEM -I ..\User-IE:\Keil\Pack\Keil\STM32F1xx_DFP\2.3.0\Device\Include-IE:\Keil\ARM\CMSIS\Include-D__UVISION_VERSION="531" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\misc.o --omf_browse ..\obj\misc.crf --depend ..\obj\misc.d)
 I (..\Lib\inc\misc.h)(0x4D783BB4)

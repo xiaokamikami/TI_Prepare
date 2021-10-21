@@ -468,6 +468,11 @@
               <FileType>1</FileType>
               <FilePath>.\bsp_nvic.c</FilePath>
             </File>
+            <File>
+              <FileName>encoder.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\SYSTEM\encoder.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

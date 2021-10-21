@@ -25,7 +25,9 @@
 #include "stm32f10x_it.h"
 #include "bsp_nvic.h"
 #include "main.h"
-extern u8 Key1_num,Key2_num;
+//#include "key.h"
+
+extern __IO u8 Key1_num,Key2_num;
 
 
 /** @addtogroup STM32F10x_StdPeriph_Template
@@ -142,7 +144,14 @@ void KEY1_IRQHandler(void)
   //确保是否产生了EXTI Line中断
 	if(EXTI_GetITStatus(KEY1_INT_EXTI_LINE) != RESET) 
 	{
-		Key1_num =Key1_num + 1;
+		if(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_15) == 1 )  
+		{	 
+			Key1_num =Key1_num + 1;
+		}
+		else
+		{
+			Key1_num =Key1_num - 1;
+		}
     //清除中断标志位
 		EXTI_ClearITPendingBit(KEY1_INT_EXTI_LINE);     
 	}  
