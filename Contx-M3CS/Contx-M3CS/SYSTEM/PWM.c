@@ -44,14 +44,15 @@ void TIM8_PWM_Init(u16 arr, u16 psc)		//µç»ú
 	TIM_OC2Init(TIM8, &TIM_OCInitStructure); 
 	TIM_OC2PreloadConfig(TIM8, TIM_OCPreload_Enable);
 
-//	TIM_OC3Init(TIM8, &TIM_OCInitStructure);
-//	TIM_OC3PreloadConfig(TIM8, TIM_OCPreload_Enable);
+	TIM_OC3Init(TIM8, &TIM_OCInitStructure);
+	TIM_OC3PreloadConfig(TIM8, TIM_OCPreload_Enable);
 
-//	TIM_OC4Init(TIM8, &TIM_OCInitStructure); 
-//	TIM_OC4PreloadConfig(TIM8, TIM_OCPreload_Enable);
+	TIM_OC4Init(TIM8, &TIM_OCInitStructure); 
+	TIM_OC4PreloadConfig(TIM8, TIM_OCPreload_Enable);
 
 	TIM_ARRPreloadConfig(TIM8, ENABLE);
 	TIM_CtrlPWMOutputs(TIM8, ENABLE);
+	
 	TIM_Cmd(TIM8, ENABLE);
 }
 

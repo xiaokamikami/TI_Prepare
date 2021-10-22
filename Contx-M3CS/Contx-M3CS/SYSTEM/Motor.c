@@ -13,28 +13,28 @@ void MotorX_Init(char MotorX)
 	//TIM8_PWM_Init(1000, 719); //1000 * 720 / 72MHz = 10MS
 	switch (MotorX)
 	{
-	case 1:
-	{
-		RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE); //GPIO C
+		case 1:
+		{
+			RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE); //GPIO C
 
-		GPIO_InitStrue.GPIO_Pin = GPIO_Pin_2 | GPIO_Pin_3;
-		GPIO_Init(GPIOC, &GPIO_InitStrue);
+			GPIO_InitStrue.GPIO_Pin = GPIO_Pin_2 | GPIO_Pin_3;
+			GPIO_Init(GPIOC, &GPIO_InitStrue);
 
-		GPIO_SetBits(GPIOC, GPIO_Pin_2 );
-		GPIO_ResetBits(GPIOC,GPIO_Pin_3);
-		break;
-	}
-	case 2:
-	{
-		RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE); //GPIO C
+			GPIO_SetBits(GPIOC, GPIO_Pin_2 );
+			GPIO_ResetBits(GPIOC,GPIO_Pin_3);
+			break;
+		}
+		case 2:
+		{
+			RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE); //GPIO C
 
-		GPIO_InitStrue.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1;
-		GPIO_Init(GPIOC, &GPIO_InitStrue);
+			GPIO_InitStrue.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1;
+			GPIO_Init(GPIOC, &GPIO_InitStrue);
 
-		GPIO_SetBits(GPIOC, GPIO_Pin_0 );
-		GPIO_ResetBits(GPIOC, GPIO_Pin_1);
-		break;
-	}
+			GPIO_SetBits(GPIOC, GPIO_Pin_0 );
+			GPIO_ResetBits(GPIOC, GPIO_Pin_1);
+			break;
+		}
 //	case 3:
 //	{
 //		RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE); //GPIO B
