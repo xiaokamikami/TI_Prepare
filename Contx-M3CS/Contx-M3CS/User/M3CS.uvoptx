@@ -407,8 +407,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\bsp_nvic.c</PathWithFileName>
-      <FilenameWithoutPath>bsp_nvic.c</FilenameWithoutPath>
+      <PathWithFileName>..\SYSTEM\encoder.c</PathWithFileName>
+      <FilenameWithoutPath>encoder.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -419,8 +419,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\SYSTEM\encoder.c</PathWithFileName>
-      <FilenameWithoutPath>encoder.c</FilenameWithoutPath>
+      <PathWithFileName>.\bsp_nvic.c</PathWithFileName>
+      <FilenameWithoutPath>bsp_nvic.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

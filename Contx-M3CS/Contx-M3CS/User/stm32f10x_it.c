@@ -27,7 +27,7 @@
 #include "main.h"
 //#include "key.h"
 
-extern __IO u8 Key1_num,Key2_num;
+extern __IO u8 Key1_num,Key2_num,Key3_num;
 
 
 /** @addtogroup STM32F10x_StdPeriph_Template
@@ -146,12 +146,14 @@ void KEY1_IRQHandler(void)
 	{
 		if(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_15) == 1 )  
 		{	 
+			
 			Key1_num =Key1_num + 1;
 		}
 		else
 		{
 			Key1_num =Key1_num - 1;
 		}
+		
     //清除中断标志位
 		EXTI_ClearITPendingBit(KEY1_INT_EXTI_LINE);     
 	}  
@@ -164,8 +166,22 @@ void KEY2_IRQHandler(void)
 	if(EXTI_GetITStatus(KEY2_INT_EXTI_LINE) != RESET) 
 	{
 		Key2_num = Key2_num + 1;
+		if(Key2_num >=3){Key2_num = 1;}
     //清除中断标志位
 		EXTI_ClearITPendingBit(KEY2_INT_EXTI_LINE);     
+	}  
+}
+
+void KEY3_IRQHandler(void)
+{
+	
+  //确保是否产生了EXTI Line中断
+	if(EXTI_GetITStatus(KEY3_INT_EXTI_LINE) != RESET) 
+	{
+		Key3_num = Key3_num + 1;
+		if(Key3_num >=5){Key3_num = 1;}
+    //清除中断标志位
+		EXTI_ClearITPendingBit(KEY3_INT_EXTI_LINE);     
 	}  
 }
 //void SysTick_Handler(void)
