@@ -1,15 +1,25 @@
-#include "stm32f10x.h"
+//** c
+#include <stdio.h>
+#include "main.h"
+//** sys
 #include "delay.h"
 #include "lcd.h"
 #include "key.h"
 #include "pwm.h"
 #include "Motor.h"
-#include <stdio.h>
-#include "main.h"
 #include "bsp_nvic.h"
-#include "uart.h"
 #include "encoder.h"
+#include "TIM.h"
+//** comm
+//#include "DMA.h"
+#include "usart.h"
 
+
+const u8 TEXT_TO_SEND[]={"ALIENTEK Mini STM32 DMA 串口实验"};
+#define TEXT_LENTH  sizeof(TEXT_TO_SEND)-1			//TEXT_TO_SEND字符串长度(不包含结束符)
+u8 SendBuff[(TEXT_LENTH+2)*100];
+
+//** lcd
 u32 TimingDelay = 0;
 __IO u8 Key1_num = 0 ,Key2_num =0 ,Key3_num;
 int leftWheelEncoderNow    = 0;
@@ -95,7 +105,7 @@ void LCD_yemian(uint8_t mode,uint16_t speed1,uint16_t speed2,uint16_t Angle)
 		LCD_ShowString(0*8,5*16,(u8*)LCD_Buff,WHITE);		
 		sprintf((char * )LCD_Buff,"Angle:%d   ",Angle);
 		LCD_ShowString(0*8,6*16,(u8*)LCD_Buff,WHITE);
-		Get_Motor_Speed(&leftWheelEncoderNow,&rightWheelEncoderNow);
+		
 		sprintf((char * )LCD_Buff,"L1_PRA:%d   ",leftWheelEncoderNow);
 		LCD_ShowString(0*8,7*16,(u8*)LCD_Buff,RED);
 		sprintf((char * )LCD_Buff,"R1_PRA:%d   ",rightWheelEncoderNow );
@@ -113,6 +123,17 @@ void LCD_yemian(uint8_t mode,uint16_t speed1,uint16_t speed2,uint16_t Angle)
 		
 	}
 }	
+//**Handle
+void TIM1_UP_IRQHandler(void)   //TIM1中断
+{
+	if (TIM_GetITStatus(TIM1, TIM_IT_Update) != RESET) //检查指定的TIM1中断发生与否:TIM1 中断源 
+	{
+	   TIM_ClearITPendingBit(TIM1, TIM_IT_Update);  //清除TIMx的中断待处理位:TIM1 中断源 
+	   Get_Motor_Speed(&leftWheelEncoderNow,&rightWheelEncoderNow);
+	   /* 这里写中断 */
+	
+	}
+}
 
 int main(void)
 {
@@ -122,7 +143,7 @@ int main(void)
 	uint8_t Mode = 1;
 	
 	Mian_Init();
-	
+	Timer1_Init(72,2000);  
 	while(1)
 	{	
 		LCD_Clear(BLACK);
@@ -135,6 +156,7 @@ int main(void)
 	//		MotorX_Init(2);
 	//		TIM_SetCompare1(TIM8,700);
 	//		TIM_SetCompare2(TIM8,700);
+			TIM_Cmd(TIM1, ENABLE);  //使能TIMx外设  
 			Key1_num =0;
 	//**显示标题
 			LCD_ShowString(10*8,0*16,(u8*)"Contx-MC103  ",YELLOW);
@@ -154,7 +176,7 @@ int main(void)
 			MotorX_Init(2);
 			TIM_SetCompare1(TIM8,700);
 			TIM_SetCompare2(TIM8,700);
-			
+			TIM_Cmd(TIM1, ENABLE);  //使能TIMx外设  
 	//**显示目标
 			LCD_ShowString(5*8,0*16,(u8*)"Contx-MC103  ",RED);
 			LCD_ShowString(5*8,1*16,(u8*)"Find Ball ..... ",WHITE);
@@ -207,10 +229,13 @@ void Mian_Init(void)
 	KEY_Init();
 	Lcd_Init();
 	
-	//UART_Init(3);
+	//DMA1通道4,外设为串口1,存储器为SendBuff,长(TEXT_LENTH+2)*100.
 	LCD_Clear(BLACK);
 	BACK_COLOR = BLACK;
 	LCD_ShowString(6*8,0*16,(u8*)"PUSH KEY1 Star",WHITE);
+	
+	/* 初始化USART */
+	uart_init(115200);	
 	
 	while(GPIO_ReadInputDataBit(GPIOC,GPIO_Pin_13) == 1){} //按键开始自检
 		delay_ms(200);

@@ -3,10 +3,8 @@
 "..\obj\stm32f10x_it.o"
 "..\obj\delay.o"
 "..\obj\sys.o"
-"..\obj\usart.o"
 "..\obj\oled_s.o"
 "..\obj\spi.o"
-"..\obj\uart.o"
 "..\obj\pwm.o"
 "..\obj\motor.o"
 "..\obj\hc595.o"
@@ -42,6 +40,9 @@
 "..\obj\stm32f10x_wwdg.o"
 "..\obj\core_cm3.o"
 "..\obj\system_stm32f10x.o"
+"..\obj\tim.o"
+"..\obj\uart.o"
+"..\obj\dma.o"
 --strict --scatter "..\OBJ\RGB.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

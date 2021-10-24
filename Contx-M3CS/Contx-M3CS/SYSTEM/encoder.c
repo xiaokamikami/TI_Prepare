@@ -15,7 +15,8 @@ void Encoder_Init_TIM3(void)
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);   //使能PA端口时钟
 
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_7|GPIO_Pin_6;	//端口配置
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;   //浮空输入
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;//GPIO_Mode_IN_FLOATING;   //浮空输入
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);					//根据设定参数初始化GPIOA
 
 	TIM_TimeBaseStructInit(&TIM_TimeBaseStructure);
@@ -54,6 +55,7 @@ void Encoder_Init_TIM5(void)
 
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1|GPIO_Pin_0;	//端口配置
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;   //浮空输入
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);					//根据设定参数初始化GPIOB
 
 	TIM_TimeBaseStructInit(&TIM_TimeBaseStructure);
@@ -114,11 +116,9 @@ int Get_Motor_Speed(int *leftSpeed,int *rightSpeed)
 
 	static int leftWheelEncoderLast   = 0;
 	static int rightWheelEncoderLast  = 0;	
-	//static int huancun1,huancun2;
+
 	//记录本次左右编码器数据
-//	huancun1	+= getTIMx_DetaCnt(TIM3);
-//	huancun2	+= getTIMx_DetaCnt(TIM5);
-//	huancun1 = abs(huancun1);
+
 	
 	leftWheelEncoderNow += (abs(getTIMx_DetaCnt(TIM3)));
 	rightWheelEncoderNow+= (abs(getTIMx_DetaCnt(TIM5)));

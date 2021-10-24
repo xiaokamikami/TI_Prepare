@@ -409,11 +409,6 @@
               <FilePath>..\SYSTEM\sys\sys.c</FilePath>
             </File>
             <File>
-              <FileName>usart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\SYSTEM\usart\usart.c</FilePath>
-            </File>
-            <File>
               <FileName>OLED_S.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\SYSTEM\OLED_S.c</FilePath>
@@ -422,11 +417,6 @@
               <FileName>SPI.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\SYSTEM\SPI.c</FilePath>
-            </File>
-            <File>
-              <FileName>uart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\SYSTEM\uart.c</FilePath>
             </File>
             <File>
               <FileName>PWM.c</FileName>
@@ -617,6 +607,31 @@
               <FileName>system_stm32f10x.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\MCSIS\system_stm32f10x.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>TIM</GroupName>
+          <Files>
+            <File>
+              <FileName>TIM.C</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\SYSTEM\TIM.C</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Communication</GroupName>
+          <Files>
+            <File>
+              <FileName>uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\SYSTEM\uart.c</FilePath>
+            </File>
+            <File>
+              <FileName>DMA.C</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\SYSTEM\DMA.C</FilePath>
             </File>
           </Files>
         </Group>

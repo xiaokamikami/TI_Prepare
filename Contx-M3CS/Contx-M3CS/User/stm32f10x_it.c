@@ -25,7 +25,7 @@
 #include "stm32f10x_it.h"
 #include "bsp_nvic.h"
 #include "main.h"
-//#include "key.h"
+#include "usart.h"
 
 extern __IO u8 Key1_num,Key2_num,Key3_num;
 
@@ -184,6 +184,14 @@ void KEY3_IRQHandler(void)
 		EXTI_ClearITPendingBit(KEY3_INT_EXTI_LINE);     
 	}  
 }
+
+/**
+  * @brief  串口空闲中断.
+  * @param  无
+  * @retval 无
+  */
+
+
 //void SysTick_Handler(void)
 //{
 //}
