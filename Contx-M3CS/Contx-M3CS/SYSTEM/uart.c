@@ -1,8 +1,28 @@
 #include "stm32f10x.h"
+#include "main.h"
 #include "usart.h"
+
+#include "cJson.h"
+#include "string.h"
+#include "delay.h"
+#include "stdlib.h"
+//static volatile	char *commonend;   //指令存放
+
 void uart_init(u32 bound);
 void MYDMA_Enable(DMA_Channel_TypeDef*DMA_CHx);
-u8 DMA_Rece_Buf[200];
+u8 DMA_Rece_Buf[100];
+u8 Print_Buf[50];
+static void Json_RX(char * out);
+char *Json_ptr;		  //Json字符
+
+__IO int k2_x = 0;   //坐标值存放 
+__IO int k2_y = 0;   //
+__IO int k2_color = 0;   //颜色数据 
+
+//char* k2_x ;
+//char* k2_y;   //
+//char* k2_color;   //颜色数据 
+
 //加入以下代码,支持printf函数,而不需要选择use MicroLIB	  
 #if 1
 #pragma import(__use_no_semihosting)             
@@ -11,7 +31,7 @@ struct __FILE
 { 
 	int handle; 
 
-}; 
+};
 
 FILE __stdout;       
 //定义_sys_exit()以避免使用半主机模式    
@@ -27,6 +47,83 @@ int fputc(int ch, FILE *f)
 	return ch;
 }
 #endif 
+
+//函数名：  Json_Extract
+//作者：    Kamimiaomiao
+//日期：    2021-6-13
+//功能：    提取Json格式数据
+//输入参数：AT透传接收的数据      
+//返回值：  透传接收到的Json数据
+//修改记录：
+//使用方法：传入透传的数据返回透传流内Json格式部分的字符串	   
+
+static char* Json_Extract(char * Json_ptr ,char * Rxb)			//提取Json指令
+{
+	u8 i = 0;
+	Json_ptr = strchr(Rxb,'{');
+	for(i=0;i<sizeof(Json_ptr);i++)
+	{
+		if(Json_ptr[i] == '}')
+		{
+			Json_ptr[i+1] = 0;
+			break;
+		}
+	}
+	
+	return  Json_ptr;
+}
+
+//函数名：  Json_RX
+//作者：    Kamimiaomiao
+//日期：    2021-6-13
+//功能：    解析返回的Json数据
+//输入参数：Json格式数据      
+//返回值： //会直接存新指令到对应的变量里 
+
+//修改记录：
+//使用方法：在初始化指针添加你的json_参数名字	   
+//      	然后json_参数名字 = cJSON_GetObjectItem( json ,"参数名字");
+//          获得命令后按自己要求处理 默认是显示在屏幕上
+static void Json_RX(char * out)			//解析Json指令
+{
+    cJSON *json,*json_x,*json_y,*json_co;
+    //out="{\"one\":\"long\",\"two\":\"2\",\"three\":3}"; //JSON格式示例
+	
+//	char commend1[10];
+//	commonend = commend1;
+	
+    json = cJSON_Parse(out); //将得到的字符串解析成json形式
+    json_x  = cJSON_GetObjectItem( json ,"x");  //从json获取键值内容
+	json_y  = cJSON_GetObjectItem( json ,"y");//从json获取键值内容
+	json_co = cJSON_GetObjectItem( json ,"co");//从json获取键值内容
+ 
+//  sprintf((char *)TXbuf,"\r\n one:%s   two:%lf   three:%d",json_one->valuestring,json_two->valuedouble,json_three->valueint);
+//**解析法1
+//	strcpy((char *)commonend, json_x->valuestring);
+//	k2_x  = atoi((char *)commonend);
+//	strcpy((char *)commonend, json_y->valuestring);
+//	k2_y  = atoi((char *)commonend);
+//	strcpy((char *)commonend, json_co->valuestring);
+//	k2_color  = atoi((char *)commonend);	
+//	printf("comm:%s\n",commonend);
+	
+//**解析法2
+	k2_x = json_x->valueint;	
+	k2_y = json_y->valueint;
+	k2_color = json_co->valueint;	
+	//printf("k2:%d",k2_x);
+
+
+
+//	sprintf((char *)TXbuf,"MQTT:command:%s \r\n ",json_command->valuestring);	//串口返回指令		
+//	HAL_UART_Transmit(&huart1, (uint8_t *)TXbuf, sizeof(TXbuf),200);
+//	memset((char *)TXbuf, 0, sizeof(TXbuf)); 
+	
+	delay_ms(10);
+    cJSON_Delete(json);  //释放内存 
+//	return json_command->valuestring;
+} 
+
 //初始化IO 串口1 
 //bound:波特率
 void uart_init(u32 bound)
@@ -75,7 +172,7 @@ void uart_init(u32 bound)
  
     //相应的DMA配置
   DMA_DeInit(DMA1_Channel6);   //将DMA的通道5寄存器重设为缺省值  串口1对应的是DMA通道5
-  DMA_InitStructure.DMA_PeripheralBaseAddr = (u32)&USART1->DR; //DMA外设usart基地址
+  DMA_InitStructure.DMA_PeripheralBaseAddr = (u32)&USART2->DR; //DMA外设usart基地址
   DMA_InitStructure.DMA_MemoryBaseAddr = (u32)DMA_Rece_Buf;  //DMA内存基地址
   DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;  //数据传输方向，从外设读取发送到内存
   DMA_InitStructure.DMA_BufferSize = DMA_Rec_Len;  //DMA通道的DMA缓存的大小
@@ -123,10 +220,19 @@ void USART2_IRQHandler(void)                //串口1中断服务程序
           Usart2_Rec_Cnt =DMA_Rec_Len-DMA_GetCurrDataCounter(DMA1_Channel6); //算出接本帧数据长度
    
          //***********帧数据处理函数************//
-          printf ("Thelenght:%d\r\n",Usart2_Rec_Cnt);
-          printf ("The data:\r\n");
-          Usart2_Send(DMA_Rece_Buf,Usart2_Rec_Cnt);
-		  printf ("\r\nOver! \r\n");
+          //printf ("Thelenght:%d \n",Usart2_Rec_Cnt);
+          //printf ("The rx_data: \n");
+		  
+          //Usart2_Send(DMA_Rece_Buf,Usart2_Rec_Cnt);
+		  //Json_ptr = Json_Extract(Json_ptr,(char *)DMA_Rece_Buf);		//提取Json
+		  //Usart2_Send((u8 *)Json_ptr,sizeof(Json_ptr));
+		  //printf ("The data: \n");
+		  //Json_RX(Json_ptr);
+		  
+		  Json_RX((char * )DMA_Rece_Buf) ;
+		  printf("x:%d,y:%d,color:%d \n",k2_x,k2_y,k2_color);		  
+		  printf ("\r\nOver! \n");
+
         //*************************************//
          USART_ClearITPendingBit(USART2,USART_IT_IDLE);         //清除中断标志
          MYDMA_Enable(DMA1_Channel6);                  //恢复DMA指针，等待下一次的接收

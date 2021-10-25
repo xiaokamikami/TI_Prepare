@@ -1,6 +1,7 @@
 #include "encoder.h"
 #include "main.h"
 #include "math.h"
+#include "stdlib.h"
 /**************************************************************************
 函数功能：把TIM3初始化为编码器接口模式
 入口参数：无

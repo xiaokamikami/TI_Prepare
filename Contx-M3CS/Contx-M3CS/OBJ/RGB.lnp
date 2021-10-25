@@ -43,7 +43,9 @@
 "..\obj\tim.o"
 "..\obj\uart.o"
 "..\obj\dma.o"
---strict --scatter "..\OBJ\RGB.sct"
+"..\obj\cjson.o"
+"..\obj\cjson_utils.o"
+--library_type=microlib --strict --scatter "..\OBJ\RGB.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list ".\Listings\RGB.map" -o ..\OBJ\RGB.axf

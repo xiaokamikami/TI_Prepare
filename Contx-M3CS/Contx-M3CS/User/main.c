@@ -1,5 +1,4 @@
-//** c
-#include <stdio.h>
+//** stm
 #include "main.h"
 //** sys
 #include "delay.h"
@@ -14,17 +13,22 @@
 //#include "DMA.h"
 #include "usart.h"
 
-
+//** USART
 const u8 TEXT_TO_SEND[]={"ALIENTEK Mini STM32 DMA 串口实验"};
 #define TEXT_LENTH  sizeof(TEXT_TO_SEND)-1			//TEXT_TO_SEND字符串长度(不包含结束符)
 u8 SendBuff[(TEXT_LENTH+2)*100];
 
-//** lcd
+//extern __IO int k2_x;   //坐标值存放 
+//extern __IO int k2_y;   //
+//extern __IO int k2_color;   //颜色数据 
+
+//** LCD
 u32 TimingDelay = 0;
 __IO u8 Key1_num = 0 ,Key2_num =0 ,Key3_num;
 int leftWheelEncoderNow    = 0;
 int rightWheelEncoderNow   = 0;
 
+//** USER
 static uint16_t Set_L1_Speed =0;
 static uint16_t Set_R1_Speed =0;
 static uint8_t Set_Find_Ball = 0;
