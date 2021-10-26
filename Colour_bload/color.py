@@ -1,11 +1,37 @@
-
+#M1W
 import sensor, image, lcd, time
 from Maix import GPIO
 import KPU as kpu
 from fpioa_manager import fm    # 导入库
 import gc
+import ujson
+from machine import UART
+import machine
+from board import board_info
+
 #系统初始化
 gc.collect()
+
+
+#引脚定义
+LED_G = 12
+LED_R = 13
+LED_B = 14
+fm.register(LED_G, fm.fpioa.GPIO0)
+fm.register(LED_R, fm.fpioa.GPIO1)
+fm.register(LED_B, fm.fpioa.GPIO2)
+
+led_b=GPIO(GPIO.GPIO0, GPIO.OUT)
+led_g=GPIO(GPIO.GPIO1, GPIO.OUT)
+led_r=GPIO(GPIO.GPIO2, GPIO.OUT)
+led_g.value(1)
+led_b.value(1)
+led_r.value(1)
+
+
+fm.register(15,fm.fpioa.UART2_TX)
+fm.register(17,fm.fpioa.UART2_RX)
+uart_stm32 = machine.UART(UART.UART2, 115200, 8, 1, 0, timeout=100, read_buf_len=128)
 
 color_R = (255, 0, 0)
 color_G = (0, 255, 0)
@@ -24,16 +50,33 @@ def drawConfidenceText(image, rol, classid, value):
     text = ""
     _confidence = int(value * 100)
 
-    if classid == 1:
+    if classid == 0:
         text = 'Black: ' + str(_confidence) + '%'
-    elif classid ==2:
+        led_g.value(1)
+        led_r.value(1)
+        led_b.value(1)
+    elif classid ==1:
         text = 'Blue: ' + str(_confidence) + '%'
-    elif classid ==3:
+        led_b.value(0)
+        led_r.value(1)
+        led_g.value(1)
+    elif classid ==2:
         text = 'Red: ' + str(_confidence) + '%'
-    elif classid ==5:
-        text = 'Green: ' + str(_confidence) + '%'
+        led_r.value(0)
+        led_g.value(1)
+        led_b.value(1)
     elif classid ==4:
+        text = 'Green: ' + str(_confidence) + '%'
+        led_g.value(0)
+        led_r.value(1)
+        led_b.value(1)
+    elif classid ==3:
         text = 'White: ' + str(_confidence) + '%'
+        led_g.value(0)
+        led_r.value(0)
+        led_b.value(0)
+
+
     image.draw_string(rol[0], rol[1], text, color=color_G, scale=2.5)
 
 
@@ -58,7 +101,7 @@ anchor = (1.5095, 2.6617, 1.9516, 3.4156, 2.5343, 4.4111, 2.8735, 1.6412, 4.0553
 _ = kpu.init_yolo2(task, 0.5, 0.3, 5, anchor)
 img_lcd = image.Image()
 
-
+ball_dict = {}
 while (True):
 
     img = sensor.snapshot()
@@ -71,32 +114,37 @@ while (True):
             itemROL = item.rect()
             classID = int(item.classid())
             print_args = (item.x(), item.y(), classID)
-            print("x:",print_args[0],"y:",print_args[1],"id:",print_args[2])
+            #print("x:",print_args[0],"y:",print_args[1],"id:",print_args[2])
             if classID == 0 and confidence > 0.5:           #图像符合
                 _ = img.draw_rectangle(itemROL, color_Blk, tickness=5)        #打框
                 if totalRes == 1:
-                    drawConfidenceText(img, (0, 0), 1, confidence)          #显示名称
-
+                    drawConfidenceText(img, (0, 0), classID, confidence)          #显示名称
             elif classID == 1 and confidence > 0.5:
                 _ = img.draw_rectangle(itemROL, color_B, tickness=5)
                 if totalRes == 1:
-                    drawConfidenceText(img, (0, 0), 2, confidence)
+                    drawConfidenceText(img, (0, 0), classID, confidence)
 
             elif classID == 2 and confidence > 0.5:
                 _ = img.draw_rectangle(itemROL, color_G, tickness=5)
                 if totalRes == 1:
-                    drawConfidenceText(img, (0, 0), 3, confidence)
+                    drawConfidenceText(img, (0, 0), classID, confidence)
 
             elif classID == 3 and confidence > 0.5:
                 _ = img.draw_rectangle(itemROL, color_R, tickness=5)
                 if totalRes == 1:
-                    drawConfidenceText(img, (0, 0), 4, confidence)
+                    drawConfidenceText(img, (0, 0), classID, confidence)
 
             elif classID == 4 and confidence > 0.5:
                 _ = img.draw_rectangle(itemROL, color_Wit, tickness=5)
                 if totalRes == 1:
-                    drawConfidenceText(img, (0, 0), 5, confidence)
+                    drawConfidenceText(img, (0, 0), classID, confidence)
 
+            ball_dict["x"] = print_args[0]
+            ball_dict["y"] = print_args[1]
+            ball_dict["co"]= print_args[2]
+            encoded = ujson.dumps(ball_dict)
+            uart_stm32.write(encoded+"\n")
+            print(encoded)
             # else:
             #     _ = img.draw_rectangle(itemROL, color=color_G, tickness=5)
             #     if totalRes == 1:
@@ -105,7 +153,12 @@ while (True):
             time.sleep_ms(100)
 
     else:
-
+        led_g.value(1)
+        led_r.value(1)
+        led_b.value(1)
         _ = lcd.display(img)
+    gc.collect()
 
+uart_A.deinit()
+del uart_A
 _ = kpu.deinit(task)
