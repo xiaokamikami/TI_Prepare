@@ -17,17 +17,23 @@ gc.collect()
 LED_G = 12
 LED_R = 13
 LED_B = 14
+LED_Compensation = 16
 fm.register(LED_G, fm.fpioa.GPIO0)
 fm.register(LED_R, fm.fpioa.GPIO1)
 fm.register(LED_B, fm.fpioa.GPIO2)
 
+fm.register(LED_Compensation, fm.fpioa.GPIO3)
+
 led_b=GPIO(GPIO.GPIO0, GPIO.OUT)
 led_g=GPIO(GPIO.GPIO1, GPIO.OUT)
 led_r=GPIO(GPIO.GPIO2, GPIO.OUT)
+
+led_c=GPIO(GPIO.GPIO3, GPIO.OUT)
+
 led_g.value(1)
 led_b.value(1)
 led_r.value(1)
-
+led_c.value(1)
 
 fm.register(15,fm.fpioa.UART2_TX)
 fm.register(17,fm.fpioa.UART2_RX)
@@ -87,8 +93,8 @@ sensor.reset(dual_buff=True)
 sensor.set_pixformat(sensor.RGB565)
 sensor.set_framesize(sensor.QVGA)
 sensor.set_windowing((224,224))
-sensor.set_hmirror(0)    #设置摄像头镜像
-sensor.set_vflip(0)      #设置摄像头翻转
+sensor.set_hmirror(1)    #设置摄像头镜像
+sensor.set_vflip(1)      #设置摄像头翻转
 #sensor.set_auto_gain(False)  # must turn this off to prevent image washout...
 #sensor.set_auto_whitebal(False)  # must turn this off to prevent image washout...
 sensor.run(1)
