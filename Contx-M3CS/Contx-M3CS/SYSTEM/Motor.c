@@ -4,7 +4,31 @@
 
 char Num_Motor[4][16]; //"Motx:R/L (Speed) %"
 
-void MotorX_Init(char MotorX)
+void MotorX_transfer (u8 mode)
+{
+	if(mode == 1)
+	{
+		GPIO_SetBits(GPIOC, GPIO_Pin_2 );
+		GPIO_ResetBits(GPIOC, GPIO_Pin_3 );
+		GPIO_SetBits(GPIOC, GPIO_Pin_0 );
+		GPIO_ResetBits(GPIOC, GPIO_Pin_1 );
+	}
+	else if (mode == 2)
+	{
+		GPIO_SetBits(GPIOC, GPIO_Pin_3 );
+		GPIO_ResetBits(GPIOC, GPIO_Pin_2 );
+		GPIO_SetBits(GPIOC, GPIO_Pin_1 );
+		GPIO_ResetBits(GPIOC, GPIO_Pin_0 ); 
+	}
+	else if(mode == 0)
+	{
+		GPIO_ResetBits(GPIOC, GPIO_Pin_2 );
+		GPIO_ResetBits(GPIOC, GPIO_Pin_3 );
+		GPIO_ResetBits(GPIOC, GPIO_Pin_0 );
+		GPIO_ResetBits(GPIOC, GPIO_Pin_1 ); 
+	}
+}
+void MotorX_Init(u8 MotorX)
 {
 	GPIO_InitTypeDef GPIO_InitStrue;
 	GPIO_InitStrue.GPIO_Mode = GPIO_Mode_Out_PP;
@@ -20,8 +44,8 @@ void MotorX_Init(char MotorX)
 			GPIO_InitStrue.GPIO_Pin = GPIO_Pin_2 | GPIO_Pin_3;
 			GPIO_Init(GPIOC, &GPIO_InitStrue);
 
-			GPIO_SetBits(GPIOC, GPIO_Pin_2 );
-			GPIO_ResetBits(GPIOC,GPIO_Pin_3);
+//			GPIO_SetBits(GPIOC, GPIO_Pin_2 );
+//			GPIO_ResetBits(GPIOC,GPIO_Pin_3);
 			break;
 		}
 		case 2:
@@ -31,8 +55,8 @@ void MotorX_Init(char MotorX)
 			GPIO_InitStrue.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1;
 			GPIO_Init(GPIOC, &GPIO_InitStrue);
 
-			GPIO_SetBits(GPIOC, GPIO_Pin_0 );
-			GPIO_ResetBits(GPIOC, GPIO_Pin_1);
+//			GPIO_SetBits(GPIOC, GPIO_Pin_0 );
+//			GPIO_ResetBits(GPIOC, GPIO_Pin_1);
 			break;
 		}
 //	case 3:

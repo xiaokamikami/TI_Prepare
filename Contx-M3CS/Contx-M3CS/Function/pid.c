@@ -26,8 +26,8 @@ int SpeedInnerControl1(int Speed,int Target) // 速度内环控制
 	Error_Prev1 = Error_Last1;	  	  // 保存上上次误差
     Error_Last1 = Error;	              // 保存上次偏差
 
-    if(Pwm1 >= 1500) Pwm1 = 1500;	      // 限幅
-    if(Pwm1 <=-1500) Pwm1 = -1500;
+    if(Pwm1 >= 710) Pwm1 = 710;	      // 限幅
+    if(Pwm1 <=-710) Pwm1 = -710;
     return Pwm1;	                      // 返回输出值
 } 
 int SpeedInnerControl2(int Speed,int Target) // 速度内环控制
@@ -50,8 +50,8 @@ int SpeedInnerControl2(int Speed,int Target) // 速度内环控制
 	Error_Prev2 = Error_Last2;	  	  // 保存上上次误差
     Error_Last2 = Error;	              // 保存上次偏差
 
-    if(Pwm2 >= 1500) Pwm2 = 1500;	      // 限幅
-    if(Pwm2 <=-1500) Pwm2 = -1500;
+    if(Pwm2 >= 710) Pwm2 = 710;	      // 限幅
+    if(Pwm2 <=-710) Pwm2 = -710;
     return Pwm2;	                      // 返回输出值
 } 
 

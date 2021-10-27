@@ -18,10 +18,7 @@ char *Json_ptr;		  //Json字符
 __IO int k2_x = 0;   //坐标值存放 
 __IO int k2_y = 0;   //
 __IO int k2_color = 0;   //颜色数据 
-
-//char* k2_x ;
-//char* k2_y;   //
-//char* k2_color;   //颜色数据 
+__IO u8 BALL_RX_FLAG = 0;
 
 //加入以下代码,支持printf函数,而不需要选择use MicroLIB	  
 #if 1
@@ -228,11 +225,15 @@ void USART2_IRQHandler(void)                //串口1中断服务程序
 		  //Usart2_Send((u8 *)Json_ptr,sizeof(Json_ptr));
 		  //printf ("The data: \n");
 		  //Json_RX(Json_ptr);
-		  
-		  Json_RX((char * )DMA_Rece_Buf) ;
-		  printf("x:%d,y:%d,color:%d \n",k2_x,k2_y,k2_color);		  
-		  printf ("\r\nOver! \n");
-
+		  if(BALL_RX_FLAG == 0)
+		  {
+			Json_RX((char * )DMA_Rece_Buf) ;
+			//printf("x:%d,y:%d,color:%d \n",k2_x,k2_y,k2_color);
+			BALL_RX_FLAG = 1;		
+		  }
+//		  else{printf("wait");}
+//		  printf ("\r\nOver! \n");
+		  		
         //*************************************//
          USART_ClearITPendingBit(USART2,USART_IT_IDLE);         //清除中断标志
          MYDMA_Enable(DMA1_Channel6);                  //恢复DMA指针，等待下一次的接收

@@ -43,6 +43,7 @@
 "..\obj\tim.o"
 "..\obj\uart.o"
 "..\obj\dma.o"
+"..\obj\pid.o"
 "..\obj\cjson.o"
 "..\obj\cjson_utils.o"
 --library_type=microlib --strict --scatter "..\OBJ\RGB.sct"

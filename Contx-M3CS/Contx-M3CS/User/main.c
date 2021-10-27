@@ -9,6 +9,10 @@
 #include "bsp_nvic.h"
 #include "encoder.h"
 #include "TIM.h"
+
+#include "pid.h"
+
+
 //** comm
 //#include "DMA.h"
 #include "usart.h"
@@ -18,9 +22,9 @@ const u8 TEXT_TO_SEND[]={"ALIENTEK Mini STM32 DMA 串口实验"};
 #define TEXT_LENTH  sizeof(TEXT_TO_SEND)-1			//TEXT_TO_SEND字符串长度(不包含结束符)
 u8 SendBuff[(TEXT_LENTH+2)*100];
 
-//extern __IO int k2_x;   //坐标值存放 
-//extern __IO int k2_y;   //
-//extern __IO int k2_color;   //颜色数据 
+extern __IO int k2_x;   //坐标值存放 
+extern __IO int k2_y;   //
+extern __IO int k2_color;   //颜色数据 
 
 //** LCD
 u32 TimingDelay = 0;
@@ -29,14 +33,22 @@ int leftWheelEncoderNow    = 0;
 int rightWheelEncoderNow   = 0;
 
 //** USER
-static uint16_t Set_L1_Speed =0;
-static uint16_t Set_R1_Speed =0;
 static uint8_t Set_Find_Ball = 0;
 static uint8_t *Set_Find_Ball_Char [10];
 void Mian_Init(void);
 void Dock_angle(uint16_t angle);	//180为最右  360最左
 void Clamping(uint8_t ONOFF);	//0关1开
 
+//** TAG
+extern __IO u8 BALL_RX_FLAG ; //传输完成标志
+u8 time_10ms = 0;
+u8 time_20ms = 0;
+u8 time_50ms = 0;
+static u16 Motor_Speed_Set = 0;  //期望速度
+
+//** Motor
+int Motor_Sp1 = 300;
+int Motor_Sp2 = 300;
 void Delay_Ms(u32 nTime)
 {
 	TimingDelay = nTime;
@@ -49,10 +61,10 @@ void LCD_yemian(uint8_t mode,uint16_t speed1,uint16_t speed2,uint16_t Angle)
 	uint8_t * LCD_Buff[28];
 
 	char * huancun;
+
+
 	if(mode == 1)	//Setting
 	{
-		
-
 		LCD_ShowString(0*8,3*16,(u8*)"TAG:",WHITE);
 		Key1_num = 0;
 		while(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_4) == 1)		//设置目标
@@ -89,13 +101,12 @@ void LCD_yemian(uint8_t mode,uint16_t speed1,uint16_t speed2,uint16_t Angle)
 		delay_ms(500);
 		while(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_4) == 1)		//设置速度
 		{
-			if(Key1_num > 100){Key1_num = 0;}	
+			if(Key1_num >= 100){Key1_num = 0;}	
 			LCD_ShowString(0*8,4*16,(u8*)"SET_SED:",WHITE);	
-			sprintf((char * )LCD_Buff,"%d",Key1_num);
+			sprintf((char * )LCD_Buff,"%d  ",Key1_num);
 			LCD_ShowString(8*8,4*16,(u8*)LCD_Buff,RED);	
-
-
 		}
+		Motor_Speed_Set = Key1_num *7;
 		Key2_num = 2;
 		
 	}
@@ -103,24 +114,17 @@ void LCD_yemian(uint8_t mode,uint16_t speed1,uint16_t speed2,uint16_t Angle)
 	{
 
 
-		sprintf((char * )LCD_Buff,"L1_SPEED_SET:%d   ",speed1);
-		LCD_ShowString(0*8,4*16,(u8*)LCD_Buff,WHITE);
-		sprintf((char * )LCD_Buff,"R1_SPEED_SET:%d   ",speed2);
-		LCD_ShowString(0*8,5*16,(u8*)LCD_Buff,WHITE);		
+		sprintf((char * )LCD_Buff,"SPEED_SET:%d   ",Motor_Speed_Set);
+		LCD_ShowString(0*8,3*16,(u8*)LCD_Buff,WHITE);
+//		sprintf((char * )LCD_Buff,"Msp1:%d,Msp2:%d ",Motor_Sp1,Motor_Sp2);	//调试用
+//		LCD_ShowString(0*8,4*16,(u8*)LCD_Buff,WHITE);	
 		sprintf((char * )LCD_Buff,"Angle:%d   ",Angle);
-		LCD_ShowString(0*8,6*16,(u8*)LCD_Buff,WHITE);
-		
+		LCD_ShowString(0*8,6*16,(u8*)LCD_Buff,WHITE);		
 		sprintf((char * )LCD_Buff,"L1_PRA:%d   ",leftWheelEncoderNow);
 		LCD_ShowString(0*8,7*16,(u8*)LCD_Buff,RED);
 		sprintf((char * )LCD_Buff,"R1_PRA:%d   ",rightWheelEncoderNow );
 		LCD_ShowString(0*8,8*16,(u8*)LCD_Buff,RED);
-
-		//sprintf((char * )LCD_Buff,"L_SPEED:%d ",leftWheelEncoderNow);
-		//LCD_ShowString(0*8,5*16,(u8*)LCD_Buff,WHITE);
 		
-		//sprintf((char * )LCD_Buff,"Key1:%d,Key2:%d ",Key1_num,Key2_num);
-		//LCD_ShowString(0*8,7*16,(u8*)LCD_Buff,WHITE);
-		//LCD_ShowString(28*8,14*16,(u8*)"1",WHITE);
 	}
 	else if(mode == 3)	//Capture Ball
 	{
@@ -132,10 +136,20 @@ void TIM1_UP_IRQHandler(void)   //TIM1中断
 {
 	if (TIM_GetITStatus(TIM1, TIM_IT_Update) != RESET) //检查指定的TIM1中断发生与否:TIM1 中断源 
 	{
-	   TIM_ClearITPendingBit(TIM1, TIM_IT_Update);  //清除TIMx的中断待处理位:TIM1 中断源 
-	   Get_Motor_Speed(&leftWheelEncoderNow,&rightWheelEncoderNow);
+	   TIM_ClearITPendingBit(TIM1, TIM_IT_Update);  //清除TIMx的中断待处理位:TIM1 中断源 	
+		
+	   Get_Motor_Speed(&leftWheelEncoderNow,&rightWheelEncoderNow);  //得出编码器速度
+		
+	   Motor_Sp1 = SpeedInnerControl1(leftWheelEncoderNow,Motor_Speed_Set);//PID控制电机1
+		if(Motor_Sp1 < 0 ){	Motor_Sp1 = abs(710+Motor_Sp1);}
+		TIM_SetCompare1(TIM8,Motor_Sp1);
+	   Motor_Sp2 = SpeedInnerControl2(rightWheelEncoderNow,Motor_Speed_Set);//PID控制电机2
+		if(Motor_Sp2 < 0 ){	Motor_Sp2 = abs(710+Motor_Sp2);}
+		TIM_SetCompare2(TIM8,Motor_Sp2);
+			   
 	   /* 这里写中断 */
-	
+	   
+		
 	}
 }
 
@@ -145,9 +159,10 @@ int main(void)
 	uint16_t speed1 =0,speed2 = 0;
 	uint16_t Angle = 270;
 	uint8_t Mode = 1;
-	
+	u8 Ball_color = 0;
+	u8 Ball_num = 0;
 	Mian_Init();
-	Timer1_Init(72,2000);  
+	Timer1_Init(72,1000);  	//10ms
 	while(1)
 	{	
 		LCD_Clear(BLACK);
@@ -160,7 +175,7 @@ int main(void)
 	//		MotorX_Init(2);
 	//		TIM_SetCompare1(TIM8,700);
 	//		TIM_SetCompare2(TIM8,700);
-			TIM_Cmd(TIM1, ENABLE);  //使能TIMx外设  
+	//		TIM_Cmd(TIM1, ENABLE);  //使能TIMx外设  
 			Key1_num =0;
 	//**显示标题
 			LCD_ShowString(10*8,0*16,(u8*)"Contx-MC103  ",YELLOW);
@@ -178,8 +193,10 @@ int main(void)
 			TIM8_PWM_Init(1000, 719); //1000 * 720 / 72MHz = 10MS = 1000HZ
 			MotorX_Init(1);
 			MotorX_Init(2);
-			TIM_SetCompare1(TIM8,700);
-			TIM_SetCompare2(TIM8,700);
+			if(Ball_num != 0 ){MotorX_transfer (0);}
+			else{MotorX_transfer (1);}
+			TIM_SetCompare1(TIM8,200);
+			TIM_SetCompare2(TIM8,200);
 			TIM_Cmd(TIM1, ENABLE);  //使能TIMx外设  
 	//**显示目标
 			LCD_ShowString(5*8,0*16,(u8*)"Contx-MC103  ",RED);
@@ -187,14 +204,32 @@ int main(void)
 			LCD_ShowString(10*8,2*16,(u8*)Set_Find_Ball_Char,WHITE);
 			while(Key2_num == 2)
 			{
-				delay_ms(100);
+				delay_ms(10);
 				//TIM_SetCompare1(TIM8,Pluse);
 				//TIM_SetCompare2(TIM8,Pluse);
 //				delay_ms(100);
+				if(Ball_num != 0 ){MotorX_transfer (0);}
+				else{MotorX_transfer (1);}
 				LCD_yemian(2,Pluse,Pluse,Angle);
-//				Pluse +=10;
-//				if(Pluse >=719){Pluse = 0;}
+				if(BALL_RX_FLAG == 1)	//检测到坐标输入
+				{
+					if(Ball_color == k2_color)
+					{
+						Ball_num += 1;
+					}
+					else
+					{
+						Ball_color = k2_color;
+						Ball_num = 0;
+					}
+					BALL_RX_FLAG = 0;
+					if(Ball_num >5){Key2_num = 3;break;}			//确定目标				
+				}
 			}					
+		}
+		else if(Key2_num == 3)			//进入捕获模式
+		{
+			Angle = k2_y;
 		}
 	}
 }
@@ -205,7 +240,7 @@ void Dock_angle(uint16_t angle)	//前车架转向 180为最右  360最左
 	if(Docker <10)	   {Docker = 10;}
 	else if(Docker >20){Docker = 20;}
 	TIM_SetCompare2(TIM4,Docker);
-	delay_ms(500);
+	delay_ms(250);
 	TIM_SetCompare2(TIM4,0);
 }
 
@@ -253,14 +288,9 @@ void Mian_Init(void)
 		Clamping(1); 				//LOOSE
 		
 		//**转向自检
+		Dock_angle(180);
 		Dock_angle(270);
-//		TIM_SetCompare2(TIM4,10);
-//		delay_ms(300);
-//		TIM_SetCompare2(TIM4,20);
-//		delay_ms(300);
-//		TIM_SetCompare2(TIM4,15);
-//		delay_ms(300);
-		//TIM_SetCompare2(TIM4,0);
+
 
 	//***********************************************
 	//**编码器初始化
@@ -268,7 +298,7 @@ void Mian_Init(void)
 	Encoder_Init_TIM5();
 		
 	EXTI_Key_Config();
-
+	Key2_num =1;
 //	LCD_ShowString(28*8,14*16,(u8*)"1",WHITE);
 }
 

@@ -8,7 +8,7 @@
 #define Motor3 3
 #define Motor4 4
 
-void MotorX_Init (char MotorX);
+void MotorX_Init (u8 MotorX);
 char *MotorX_Control(char MotorX,char Rotation,u16 Speed);
-
+void MotorX_transfer (u8 mode);
 #endif

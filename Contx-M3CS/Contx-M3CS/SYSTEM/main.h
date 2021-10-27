@@ -6,4 +6,8 @@ extern __IO u8 Key1_num ,Key2_num,Key3_num  ;
 extern int leftWheelEncoderNow ;
 extern int rightWheelEncoderNow;
 
+extern u8 time_10ms ;
+extern u8 time_20ms ;
+extern u8 time_50ms ;
+
 #endif /* __MAIN_H */

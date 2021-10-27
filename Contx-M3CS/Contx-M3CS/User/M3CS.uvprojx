@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\User;..\Lib\inc;..\Lib\src;..\MCSIS;..\Startup;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\SYSTEM;..\User</IncludePath>
+              <IncludePath>..\User;..\Lib\inc;..\Lib\src;..\MCSIS;..\Startup;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\SYSTEM;..\User;..\Function</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -632,6 +632,16 @@
               <FileName>DMA.C</FileName>
               <FileType>1</FileType>
               <FilePath>..\SYSTEM\DMA.C</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Funtion</GroupName>
+          <Files>
+            <File>
+              <FileName>pid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Function\pid.c</FilePath>
             </File>
           </Files>
         </Group>
