@@ -81,6 +81,25 @@ void EXTI_Key_Config(void)
   /* 使能中断 */	
   EXTI_InitStructure.EXTI_LineCmd = ENABLE;
   EXTI_Init(&EXTI_InitStructure);
+  
+  /*--------------------------RES配置-----------------------------*/
+	/* 选择按键用到的GPIO */	
+  GPIO_InitStructure.GPIO_Pin = RES_INT_GPIO_PIN;
+  /* 配置为浮空输入 */	
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;
+  GPIO_Init(RES_INT_GPIO_PORT, &GPIO_InitStructure);
+
+	/* 选择EXTI的信号源 */
+  GPIO_EXTILineConfig(RES_INT_EXTI_PORTSOURCE, RES_INT_EXTI_PINSOURCE); 
+  EXTI_InitStructure.EXTI_Line = RES_INT_EXTI_LINE;
+	
+	/* EXTI为中断模式 */
+  EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+	/* 下降沿中断 */
+  EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
+  /* 使能中断 */	
+  EXTI_InitStructure.EXTI_LineCmd = ENABLE;
+  EXTI_Init(&EXTI_InitStructure);  
 //    
 //  /*--------------------------KEY2配置-----------------------------*/
 //  

@@ -27,7 +27,7 @@
 #include "main.h"
 #include "usart.h"
 
-extern __IO u8 Key1_num,Key2_num,Key3_num;
+extern __IO u8 Key1_num,Key2_num,Key3_num,Res_near;
 
 
 /** @addtogroup STM32F10x_StdPeriph_Template
@@ -184,7 +184,13 @@ void KEY3_IRQHandler(void)
 		EXTI_ClearITPendingBit(KEY3_INT_EXTI_LINE);     
 	}  
 }
-
+void RES_IRQHandler(void)
+{
+	if(EXTI_GetITStatus(RES_INT_EXTI_LINE) != RESET) 
+	{
+		
+	}
+}
 /**
   * @brief  ´®¿Ú¿ÕÏÐÖÐ¶Ï.
   * @param  ÎÞ

@@ -30,19 +30,21 @@ Build target 'Target 1'
 compiling main.c...
 ..\Function\pid.h(4): warning:  #1-D: last line of file ends without a newline
   float PID_Postion(int Infrared,int Target);    //Î»ÖÃPID¿ØÖÆÆ÷
-main.c(159): warning:  #177-D: variable "speed1"  was declared but never referenced
+main.c(172): warning:  #177-D: variable "speed1"  was declared but never referenced
   	uint16_t speed1 =0,speed2 = 0;
-main.c(159): warning:  #177-D: variable "speed2"  was declared but never referenced
+main.c(172): warning:  #177-D: variable "speed2"  was declared but never referenced
   	uint16_t speed1 =0,speed2 = 0;
-main.c(161): warning:  #177-D: variable "Mode"  was declared but never referenced
+main.c(174): warning:  #177-D: variable "Mode"  was declared but never referenced
   	uint8_t Mode = 1;
+main.c(177): warning:  #177-D: variable "Lock_Ball_Char"  was declared but never referenced
+  	u8 Lock_Ball_Char[10] ;
 main.c(36): warning:  #550-D: variable "Set_Find_Ball"  was set but never used
   static uint8_t Set_Find_Ball = 0;
-main.c: 5 warnings, 0 errors
+main.c: 6 warnings, 0 errors
 linking...
-Program Size: Code=16424 RO-data=5120 RW-data=188 ZI-data=4236  
+Program Size: Code=16952 RO-data=5120 RW-data=192 ZI-data=4240  
 FromELF: creating hex file...
-"..\OBJ\RGB.axf" - 0 Error(s), 5 Warning(s).
+"..\OBJ\RGB.axf" - 0 Error(s), 6 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -65,11 +67,11 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: MDK-Packs::Data Exchange:JSON:cJSON:1.7.7
+      Source file:   cJSON_Utils.c
       Include file:  cJSON.h
       Source file:   cJSON.c
-      Source file:   cJSON_Utils.c
       Include file:  cJSON_Utils.h
-Build Time Elapsed:  00:00:01
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>

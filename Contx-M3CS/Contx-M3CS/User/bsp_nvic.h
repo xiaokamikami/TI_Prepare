@@ -26,6 +26,15 @@
 #define KEY3_IRQHandler            EXTI4_IRQHandler
 
 
+#define RES_INT_GPIO_PORT         GPIOC
+#define RES_INT_GPIO_CLK          (RCC_APB2Periph_GPIOC|RCC_APB2Periph_AFIO)
+#define RES_INT_GPIO_PIN          GPIO_Pin_12
+#define RES_INT_EXTI_PORTSOURCE   GPIO_PortSourceGPIOC
+#define RES_INT_EXTI_PINSOURCE    GPIO_PinSource12
+#define RES_INT_EXTI_LINE         EXTI_Line12
+#define RES_INT_EXTI_IRQ          EXTI12_IRQn
+
+#define RES_IRQHandler            EXTI12_IRQHandler
 
 #define KEY2_INT_GPIO_PORT         GPIOC
 #define KEY2_INT_GPIO_CLK          (RCC_APB2Periph_GPIOC|RCC_APB2Periph_AFIO)

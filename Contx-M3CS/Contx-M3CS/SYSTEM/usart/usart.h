@@ -7,6 +7,7 @@
 extern __IO int k2_x;   //坐标值存放 
 extern __IO int k2_y;   //
 extern __IO int k2_color;   //颜色数据 
+extern __IO int k2_val ;   //图像大小拟合距离 
 extern __IO u8 BALL_RX_FLAG;
 //extern char* k2_x;   //坐标值存放 
 //extern char* k2_y;   //

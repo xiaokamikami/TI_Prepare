@@ -18,6 +18,7 @@ char *Json_ptr;		  //Json字符
 __IO int k2_x = 0;   //坐标值存放 
 __IO int k2_y = 0;   //
 __IO int k2_color = 0;   //颜色数据 
+__IO int k2_val = 0;   //图像大小拟合距离 
 __IO u8 BALL_RX_FLAG = 0;
 
 //加入以下代码,支持printf函数,而不需要选择use MicroLIB	  
@@ -83,7 +84,7 @@ static char* Json_Extract(char * Json_ptr ,char * Rxb)			//提取Json指令
 //          获得命令后按自己要求处理 默认是显示在屏幕上
 static void Json_RX(char * out)			//解析Json指令
 {
-    cJSON *json,*json_x,*json_y,*json_co;
+    cJSON *json,*json_x,*json_y,*json_co,*json_va;
     //out="{\"one\":\"long\",\"two\":\"2\",\"three\":3}"; //JSON格式示例
 	
 //	char commend1[10];
@@ -93,7 +94,7 @@ static void Json_RX(char * out)			//解析Json指令
     json_x  = cJSON_GetObjectItem( json ,"x");  //从json获取键值内容
 	json_y  = cJSON_GetObjectItem( json ,"y");//从json获取键值内容
 	json_co = cJSON_GetObjectItem( json ,"co");//从json获取键值内容
- 
+	json_va = cJSON_GetObjectItem( json ,"va");//从json获取键值内容
 //  sprintf((char *)TXbuf,"\r\n one:%s   two:%lf   three:%d",json_one->valuestring,json_two->valuedouble,json_three->valueint);
 //**解析法1
 //	strcpy((char *)commonend, json_x->valuestring);
@@ -108,6 +109,7 @@ static void Json_RX(char * out)			//解析Json指令
 	k2_x = json_x->valueint;	
 	k2_y = json_y->valueint;
 	k2_color = json_co->valueint;	
+	k2_val = json_va->valueint;
 	//printf("k2:%d",k2_x);
 
 

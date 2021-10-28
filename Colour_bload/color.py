@@ -18,11 +18,15 @@ LED_G = 12
 LED_R = 13
 LED_B = 14
 LED_Compensation = 16
+
+
+
 fm.register(LED_G, fm.fpioa.GPIO0)
 fm.register(LED_R, fm.fpioa.GPIO1)
 fm.register(LED_B, fm.fpioa.GPIO2)
 
 fm.register(LED_Compensation, fm.fpioa.GPIO3)
+
 
 led_b=GPIO(GPIO.GPIO0, GPIO.OUT)
 led_g=GPIO(GPIO.GPIO1, GPIO.OUT)
@@ -93,8 +97,8 @@ sensor.reset(dual_buff=True)
 sensor.set_pixformat(sensor.RGB565)
 sensor.set_framesize(sensor.QVGA)
 sensor.set_windowing((224,224))
-sensor.set_hmirror(1)    #设置摄像头镜像
-sensor.set_vflip(1)      #设置摄像头翻转
+sensor.set_hmirror(0)    #设置摄像头镜像
+sensor.set_vflip(0)      #设置摄像头翻转
 #sensor.set_auto_gain(False)  # must turn this off to prevent image washout...
 #sensor.set_auto_whitebal(False)  # must turn this off to prevent image washout...
 sensor.run(1)
@@ -108,6 +112,7 @@ _ = kpu.init_yolo2(task, 0.5, 0.3, 5, anchor)
 img_lcd = image.Image()
 
 ball_dict = {}
+
 while (True):
 
     img = sensor.snapshot()
@@ -144,10 +149,12 @@ while (True):
                 _ = img.draw_rectangle(itemROL, color_Wit, tickness=5)
                 if totalRes == 1:
                     drawConfidenceText(img, (0, 0), classID, confidence)
+            _ = lcd.display(img)
 
-            ball_dict["x"] = print_args[0]
-            ball_dict["y"] = print_args[1]
-            ball_dict["co"]= print_args[2]
+            ball_dict["x"]   = print_args[0]
+            ball_dict["y"]   = print_args[1]
+            ball_dict["co"]  = print_args[2]
+            ball_dict["va"] = int(confidence*100)
             encoded = ujson.dumps(ball_dict)
             uart_stm32.write(encoded+"\n")
             print(encoded)
@@ -156,7 +163,7 @@ while (True):
             #     if totalRes == 1:
 
             #         drawConfidenceText(img, (0, 0), 0, confidence)
-            time.sleep_ms(100)
+            time.sleep_ms(20)
 
     else:
         led_g.value(1)
@@ -164,6 +171,7 @@ while (True):
         led_b.value(1)
         _ = lcd.display(img)
     gc.collect()
+
 
 uart_A.deinit()
 del uart_A
