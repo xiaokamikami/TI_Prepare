@@ -43,9 +43,9 @@ fm.register(15,fm.fpioa.UART2_TX)
 fm.register(17,fm.fpioa.UART2_RX)
 uart_stm32 = machine.UART(UART.UART2, 115200, 8, 1, 0, timeout=100, read_buf_len=128)
 
-color_R = (255, 0, 0)
-color_G = (0, 255, 0)
-color_B = (0, 0, 255)
+color_G = (255, 0, 0)
+color_B = (0, 255, 0)
+color_R = (0, 0, 255)
 color_Blk = (255,255,255)
 color_Wit = (10,10,10)
 
@@ -154,16 +154,19 @@ while (True):
             ball_dict["x"]   = print_args[0]
             ball_dict["y"]   = print_args[1]
             ball_dict["co"]  = print_args[2]
-            ball_dict["va"] = int(confidence*100)
-            encoded = ujson.dumps(ball_dict)
-            uart_stm32.write(encoded+"\n")
-            print(encoded)
+            if(confidence > 0.5):
+
+            #ball_dict["va"] = int(confidence*100)
+                encoded = ujson.dumps(ball_dict)
+                uart_stm32.write(encoded+"\n")
+                time.sleep_ms(50)
+            #print(encoded)
             # else:
             #     _ = img.draw_rectangle(itemROL, color=color_G, tickness=5)
             #     if totalRes == 1:
 
             #         drawConfidenceText(img, (0, 0), 0, confidence)
-            time.sleep_ms(20)
+
 
     else:
         led_g.value(1)
