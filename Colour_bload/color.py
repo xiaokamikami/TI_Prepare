@@ -106,7 +106,7 @@ sensor.run(1)
 
 task = kpu.load(0x300000)
 
-anchor = (1.5095, 2.6617, 1.9516, 3.4156, 2.5343, 4.4111, 2.8735, 1.6412, 4.0553, 2.3111)
+anchor = (0.8863, 1.5684, 1.5746, 2.7734, 1.5938, 0.8922, 3.0614, 1.7475, 3.0793, 3.5948)
 #anchor = (1.3316, 2.3774, 1.4857, 2.6176, 1.6022, 2.8221, 1.8719, 3.375, 2.6094, 1.5146)
 _ = kpu.init_yolo2(task, 0.5, 0.3, 5, anchor)
 img_lcd = image.Image()
@@ -160,7 +160,7 @@ while (True):
                 encoded = ujson.dumps(ball_dict)
                 uart_stm32.write(encoded+"\n")
                 time.sleep_ms(50)
-            #print(encoded)
+                print(encoded)
             # else:
             #     _ = img.draw_rectangle(itemROL, color=color_G, tickness=5)
             #     if totalRes == 1:
