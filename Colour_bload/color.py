@@ -43,14 +43,14 @@ fm.register(15,fm.fpioa.UART2_TX)
 fm.register(17,fm.fpioa.UART2_RX)
 uart_stm32 = machine.UART(UART.UART2, 115200, 8, 1, 0, timeout=100, read_buf_len=128)
 
-color_G = (255, 0, 0)
-color_B = (0, 255, 0)
+color_G = (0, 255, 0)
+color_B = (255, 0, 0)
 color_R = (0, 0, 255)
 color_Blk = (255,255,255)
 color_Wit = (10,10,10)
 
 #class_IDs = ['Black', 'Blue', 'Red', 'Green', 'White']
-class_IDs = ['Black', 'Blue', 'Red', 'White','Green']
+class_IDs = ['Black', 'Blue', 'Green', 'White','Red']
 #class_IDs = ['mask', 'unmask']
 
 
@@ -70,12 +70,12 @@ def drawConfidenceText(image, rol, classid, value):
         led_b.value(0)
         led_r.value(1)
         led_g.value(1)
-    elif classid ==2:
+    elif classid ==4:
         text = 'Red: ' + str(_confidence) + '%'
         led_r.value(0)
         led_g.value(1)
         led_b.value(1)
-    elif classid ==4:
+    elif classid ==2:
         text = 'Green: ' + str(_confidence) + '%'
         led_g.value(0)
         led_r.value(1)
@@ -99,6 +99,8 @@ sensor.set_framesize(sensor.QVGA)
 sensor.set_windowing((224,224))
 sensor.set_hmirror(0)    #设置摄像头镜像
 sensor.set_vflip(0)      #设置摄像头翻转
+sensor.skip_frames(time = 200)     # Wait for settings take effect.
+clock = time.clock()                # Create a clock object to track the FPS
 #sensor.set_auto_gain(False)  # must turn this off to prevent image washout...
 #sensor.set_auto_whitebal(False)  # must turn this off to prevent image washout...
 sensor.run(1)
@@ -106,15 +108,18 @@ sensor.run(1)
 
 task = kpu.load(0x300000)
 
-anchor = (0.8863, 1.5684, 1.5746, 2.7734, 1.5938, 0.8922, 3.0614, 1.7475, 3.0793, 3.5948)
+anchor = (1.0769, 1.2947, 1.5093, 2.6761, 2.0118, 3.5338, 2.7146, 4.5436, 3.3281, 1.8981)
 #anchor = (1.3316, 2.3774, 1.4857, 2.6176, 1.6022, 2.8221, 1.8719, 3.375, 2.6094, 1.5146)
 _ = kpu.init_yolo2(task, 0.5, 0.3, 5, anchor)
 img_lcd = image.Image()
 
 ball_dict = {}
 
-while (True):
+val_ball = 0.5  #识别限幅
 
+ball_huancun = 0
+while (True):
+    clock.tick()                    # Update the FPS clock.
     img = sensor.snapshot()
     code = kpu.run_yolo2(task, img)
     if code:
@@ -126,29 +131,34 @@ while (True):
             classID = int(item.classid())
             print_args = (item.x(), item.y(), classID)
             #print("x:",print_args[0],"y:",print_args[1],"id:",print_args[2])
-            if classID == 0 and confidence > 0.5:           #图像符合
-                _ = img.draw_rectangle(itemROL, color_Blk, tickness=5)        #打框
-                if totalRes == 1:
-                    drawConfidenceText(img, (0, 0), classID, confidence)          #显示名称
-            elif classID == 1 and confidence > 0.5:
-                _ = img.draw_rectangle(itemROL, color_B, tickness=5)
-                if totalRes == 1:
-                    drawConfidenceText(img, (0, 0), classID, confidence)
+            #if classID == 0 and confidence > val_ball:           #图像符合
+                #_ = img.draw_rectangle(itemROL, color_Blk, tickness=5)        #打框
+                #if totalRes == 1:
+                    #drawConfidenceText(img, (0, 0), classID, confidence)          #显示名称
+            #elif classID == 1 and confidence > val_ball:
+                #_ = img.draw_rectangle(itemROL, color_B, tickness=5)
+                #if totalRes == 1:
+                    #drawConfidenceText(img, (0, 0), classID, confidence)
 
-            elif classID == 2 and confidence > 0.5:
-                _ = img.draw_rectangle(itemROL, color_G, tickness=5)
-                if totalRes == 1:
-                    drawConfidenceText(img, (0, 0), classID, confidence)
+            #elif classID == 2 and confidence > val_ball:
+                #_ = img.draw_rectangle(itemROL, color_G, tickness=5)
+                #if totalRes == 1:
+                    #drawConfidenceText(img, (0, 0), classID, confidence)
 
-            elif classID == 3 and confidence > 0.5:
-                _ = img.draw_rectangle(itemROL, color_R, tickness=5)
-                if totalRes == 1:
-                    drawConfidenceText(img, (0, 0), classID, confidence)
+            #elif classID == 3 and confidence > val_ball:
+                #_ = img.draw_rectangle(itemROL, color_Wit, tickness=5)
+                #if totalRes == 1:
+                    #drawConfidenceText(img, (0, 0), classID, confidence)
 
-            elif classID == 4 and confidence > 0.5:
-                _ = img.draw_rectangle(itemROL, color_Wit, tickness=5)
-                if totalRes == 1:
-                    drawConfidenceText(img, (0, 0), classID, confidence)
+            #elif classID == 4 and confidence > val_ball:
+            #_ = img.draw_rectangle(itemROL, color_G, tickness=5)
+                #if totalRes == 1:
+                    #drawConfidenceText(img, (0, 0), classID, confidence)
+            #_ = lcd.display(img)
+
+            _ = img.draw_rectangle(itemROL, color_G, tickness=5)
+            if totalRes == 1:
+                drawConfidenceText(img, (0, 0), classID, confidence)
             _ = lcd.display(img)
 
             ball_dict["x"]   = print_args[0]
@@ -159,7 +169,11 @@ while (True):
             #ball_dict["va"] = int(confidence*100)
                 encoded = ujson.dumps(ball_dict)
                 uart_stm32.write(encoded+"\n")
-                time.sleep_ms(50)
+                if(clock.fps()<10):
+                    pass
+                else:
+                    time.sleep_ms(int(clock.fps()/10)*100)
+                #print(clock.fps())
                 print(encoded)
             # else:
             #     _ = img.draw_rectangle(itemROL, color=color_G, tickness=5)
